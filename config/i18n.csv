@@ -1,0 +1,10 @@
+id,zh_CN,zh_TW,en,ja,ko,de,fr,es,it,pt,ru,vi,th
+close,关闭,關閉,Close,閉じる,닫기,Schließen,Fermer,Cerrar,Chiudi,Fechar,Закрыть,Đóng,ปิด
+cancel,取消,取消,Cancel,キャンセル,취소,Abbrechen,Annuler,Cancelar,Annulla,Cancelar,Отмена,Hủy,ยกเลิก
+wait,稍等哦~,稍等喔~,Just a moment~,少々お待ちくださいね♪,잠시만 기다려 주세요~,Einen Moment noch~,Un petit instant~,¡Un momento!~,Solo un momento~,Só um momentinho~,Минуточку~,Chờ một chút nhé~,รอสักครู่นะคะ~
+done,完成啦~,完成啦~,All done!~,完了しましたよ♪,완료되었습니다~,Fertig!~,C'est fini !~,¡Listo!~,Fatto!~,Prontinho!~,Готово!~,Xong rồi nè~,เรียบร้อยแล้วค่ะ~
+opendir,打开目录,打开目錄,Open Directory,ディレクトリを開く,디렉토리 열기,Verzeichnis öffnen,Ouvrir le répertoire,Abrir directorio,Apri directory,Abrir diretório,Открыть каталог,Mở danh mục,เปิดไดเรกทอรี
+copy,复制,複製,Copy,コピー,복사,Kopieren,Copier,Copiar,Copia,Copiar,Копировать,Sao chép,คัดลอก
+web-ask,网站收到了~想干什么?,網站收到了~想幹什麼?,Website received! What would you like to do?,サイトを受け取りました。何をしますか？,웹사이트를 받았습니다! 무엇을 도와드릴까요?,Webseite erhalten! Was möchten Sie tun?,Site reçu ! Que voulez-vous faire ?,¡Sitio web recibido! ¿Qué quieres hacer?,Sito ricevuto! Cosa vuoi fare?,Site recebido! O que você quer fazer?,Сайт получен! Что вы хотите сделать?,Đã nhận được trang web! Bạn muốn làm gì?,ได้รับเว็บไซต์แล้ว! ต้องการทำอะไรคะ?
+file-ask,文件收到了~想干什么,文件收到了~想幹什麼,File received! What would you like to do?,ファイルを受け取りました。何をしますか？,파일을 받았습니다! 무엇을 도와드릴까요?,Datei erhalten! Was möchten Sie tun?,Fichier reçu ! Que voulez-vous faire ?,¡Archivo recibido! ¿Qué quieres hacer?,File ricevuto! Cosa vuoi fare?,Arquivo recebido! O que você quer fazer?,Файл получен! Что вы хотите сделать?,Đã nhận được tệp! Bạn muốn làm gì?,ได้รับไฟล์แล้ว! ต้องการทำอะไรคะ?
+txt-ask,文本收到了~想干什么?,文本收到了~想幹什麼?,Text received! What would you like to do?,テキストを受け取りました。何をしますか？,텍스트를 받았습니다! 무엇을 도와드릴까요?,Text erhalten! Was möchten Sie tun?,Texte reçu ! Que voulez-vous faire ?,¡Texto recibido! ¿Qué quieres hacer?,Testo ricevuto! Cosa vuoi fare?,Texto recebido! O que você quer fazer?,Текст получен! Что вы хотите сделать?,Đã nhận được văn bản! Bạn muốn làm gì?,ได้รับข้อความแล้ว! ต้องการทำอะไรคะ?

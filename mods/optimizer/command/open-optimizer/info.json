@@ -1,0 +1,6 @@
+{
+    "name":"optimizer",
+    "tool":"optimizer",
+    "group":"tool",
+    "wait":true
+}

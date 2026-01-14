@@ -1,0 +1,50 @@
+/* Remove icon border in menus. */
+#TrayMenu::item:selected,
+#MainWindow>QMenu::item:selected,
+#menu_bar>QMenu::item:selected
+{
+    border:none
+}
+
+#TrayMenu::item,
+#MainWindow>QMenu::item,
+#menu_bar>QMenu::item
+{
+    ;padding: 0.2em 1em 0.2em 1em
+    ;padding-left: ${scale=2}${icon_size}${scale=1}px
+}
+
+#TrayMenu::icon,
+#MainWindow>QMenu::icon,
+#menu_bar>QMenu::icon
+{
+    ;padding-left: ${scale=0.5}${icon_size}${scale=1}px
+}
+
+/* Keep default item highlighted (removing icon border resets the style). */
+#TrayMenu::item:default,
+#MainWindow>QMenu::item:default,
+#menu_bar>QMenu::item:default
+{
+    font-weight:bold
+}
+
+#TrayMenu,
+#MainWindow>QMenu,
+#menu_bar>QMenu
+{
+    ${menu_css}
+}
+
+#TrayMenu::item:selected,
+#MainWindow>QMenu::item:selected,
+#menu_bar>QMenu::item:selected
+{
+    ${menu_bar_selected_css}
+}
+
+#menu_bar, #menu_bar::item{${menu_bar_css}}
+#menu_bar::item:selected{${menu_bar_selected_css}}
+#menu_bar::item:disabled{${menu_bar_disabled_css}}
+
+${css:tooltip}

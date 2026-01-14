@@ -1,0 +1,76 @@
+[gd_scene load_steps=12 format=3 uid="uid://bijuvf6qjvh7l"]
+
+[ext_resource type="Script" uid="uid://crg6er7ge5r6p" path="res://script/Loader/ModLoader.cs" id="1_80cx4"]
+[ext_resource type="Script" uid="uid://cf0h0dtbopy88" path="res://script/UX/Context.cs" id="4_7jktm"]
+[ext_resource type="Script" uid="uid://bqrbs7h7rtxy3" path="res://script/UX/WindowDrag.cs" id="4_fc0e3"]
+[ext_resource type="Script" uid="uid://d3wi7jo3dg6kl" path="res://script/UX/WindowScale.cs" id="5_eow3j"]
+[ext_resource type="Script" uid="uid://18fs4wa17lvf" path="res://script/Logic/ClipboardRead.cs" id="6_hve3p"]
+[ext_resource type="Script" uid="uid://bo1bs0tbllods" path="res://script/UX/WindowHide.cs" id="6_j5wjh"]
+[ext_resource type="Script" uid="uid://cis2a0filoirf" path="res://script/Logic/FileDrop.cs" id="6_vef74"]
+[ext_resource type="Resource" uid="uid://ic3t0ys3qxm1" path="res://resource/icon.tres" id="8_vef74"]
+[ext_resource type="Script" uid="uid://1l0nnfmcpqp" path="res://script/UX/Dialogue.cs" id="9_vef74"]
+[ext_resource type="Script" uid="uid://be34u7vjgk822" path="res://script/UX/CharAnim.cs" id="17_e8heu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bnpwn"]
+
+[node name="Game" type="Node"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(256, 384)
+sprite_frames = SubResource("SpriteFrames_bnpwn")
+script = ExtResource("17_e8heu")
+
+[node name="Window" type="Node" parent="."]
+
+[node name="WindowDrag" type="Node" parent="Window"]
+script = ExtResource("4_fc0e3")
+
+[node name="WindowScale" type="Node" parent="Window"]
+script = ExtResource("5_eow3j")
+
+[node name="WindowHide" type="Node" parent="Window"]
+script = ExtResource("6_j5wjh")
+
+[node name="File" type="Node" parent="."]
+
+[node name="FileDrop" type="Node" parent="File"]
+script = ExtResource("6_vef74")
+
+[node name="ClipboardRead" type="Node" parent="File"]
+script = ExtResource("6_hve3p")
+
+[node name="Context" type="Node" parent="." node_paths=PackedStringArray("右键菜单")]
+script = ExtResource("4_7jktm")
+"右键菜单" = NodePath("PopupMenu")
+IconResource = ExtResource("8_vef74")
+
+[node name="PopupMenu" type="PopupMenu" parent="Context"]
+oversampling_override = 1.0
+size = Vector2i(20, 8)
+max_size = Vector2i(32768, 256)
+
+[node name="Dialogue" type="Node" parent="." node_paths=PackedStringArray("选项菜单", "标题")]
+script = ExtResource("9_vef74")
+"选项菜单" = NodePath("PopupMenu")
+"标题" = NodePath("RichTextLabel")
+IconResource = ExtResource("8_vef74")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Dialogue"]
+offset_right = 512.0
+offset_bottom = 128.0
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PopupMenu" type="PopupMenu" parent="Dialogue"]
+oversampling_override = 1.0
+size = Vector2i(20, 8)
+max_size = Vector2i(32768, 256)
+
+[node name="ModLoader" type="Node" parent="."]
+script = ExtResource("1_80cx4")

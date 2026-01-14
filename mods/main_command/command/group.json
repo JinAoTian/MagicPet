@@ -1,0 +1,14 @@
+[
+    {
+        "id":"tool",
+        "name":"tool",
+        "ask":"tool-ask",
+        "icon":"tool.png"
+    },
+    {
+        "id":"config",
+        "name":"config",
+        "ask":"config-ask",
+        "icon":"config.png"
+    }
+]

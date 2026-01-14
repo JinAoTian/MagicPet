@@ -1,0 +1,39 @@
+[
+    {
+        "name":"img-receive",
+        "batch":true,
+        "multi":true,
+        "extensions": [
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".webp",
+            ".gif",
+            ".bmp",
+            ".tiff",
+            ".tif",
+            ".ico",
+            ".tga",
+            ".pcx",
+            ".pnm"
+        ]
+    },
+    {
+        "name":"doc-receive",
+        "batch":true,
+        "multi":true,
+        "extensions": [
+            ".md",
+            ".html",
+            ".docx",
+            ".csv",
+            ".tex",
+            ".txt",
+            ".epub",
+            ".ipynb",
+            ".org",
+            ".rst",
+            ".typ"
+        ]
+    }
+]

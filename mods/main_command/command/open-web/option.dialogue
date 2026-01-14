@@ -1,0 +1,7 @@
+~ start
+web-ask
+- Bilibili [#web=http://www.bilibili.com/,icon=1.png]
+- GitHub [#web=https://github.com/LorisYounger/VPet,icon=2.png]
+- YouTube [#web=https://www.youtube.com/,icon=3.png]
+- Gemini [#web=https://gemini.google.com/,icon=4.png]
+=> END

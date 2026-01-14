@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="IconResource" load_steps=8 format=3 uid="uid://ic3t0ys3qxm1"]
+
+[ext_resource type="Script" uid="uid://q6eyrd8byy6v" path="res://script/Asset/IconResource.cs" id="1_k7665"]
+[ext_resource type="Texture2D" uid="uid://cci0nx2m64826" path="res://icon/close.png" id="2_6esnd"]
+[ext_resource type="Texture2D" uid="uid://bpq15f4ac16u3" path="res://icon/cancel.png" id="3_ca3nr"]
+[ext_resource type="Texture2D" uid="uid://b7uw5nmd7n8a0" path="res://icon/cut.png" id="3_jl5he"]
+[ext_resource type="Texture2D" uid="uid://dyt4hwtn8magx" path="res://icon/openDir.png" id="4_jl5he"]
+[ext_resource type="Texture2D" uid="uid://d17iq22tjo6jt" path="res://icon/return.png" id="5_6esnd"]
+[ext_resource type="Texture2D" uid="uid://bgk3007w713ib" path="res://icon/copy.png" id="5_gsgn5"]
+
+[resource]
+script = ExtResource("1_k7665")
+"关机图标" = ExtResource("2_6esnd")
+"目录图标" = ExtResource("4_jl5he")
+"复制图标" = ExtResource("5_gsgn5")
+"剪切图标" = ExtResource("3_jl5he")
+"取消图标" = ExtResource("3_ca3nr")
+"返回图标" = ExtResource("5_6esnd")
+metadata/_custom_type_script = "uid://q6eyrd8byy6v"

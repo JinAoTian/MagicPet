@@ -1,0 +1,13 @@
+~ start
+img-shrink-ask
+- {{IO.get("32")}} [#size=32] [if IO.get("single") and IO.get("max") >= 32] 
+- {{IO.get("64")}} [#size=64] [if IO.get("single") and IO.get("max") >= 64]
+- {{IO.get("128")}} [#size=128] [if IO.get("single") and IO.get("max") >= 128]
+- {{IO.get("256")}} [#size=256] [if IO.get("single") and IO.get("max") >= 256]
+- {{IO.get("512")}} [#size=512] [if IO.get("single") and IO.get("max") >= 512]
+- 32 [#size=32x32] [if not IO.get("single")]
+- 64 [#size=64x64] [if not IO.get("single")]
+- 128 [#size=128x128] [if not IO.get("single")]
+- 256 [#size=256x256] [if not IO.get("single")]
+- 512 [#size=512x512] [if not IO.get("single")]
+=> END

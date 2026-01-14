@@ -1,0 +1,10 @@
+~ start
+img-convert-ask
+- .png [#outExt=.png] [if IO.get("ext") != ".png"]
+- .jpg [#outExt=.jpg] [if IO.get("ext") != ".jpg" and IO.get("ext") != ".jpeg"]
+- .webp [#outExt=.webp] [if IO.get("ext") != ".webp"]
+- .gif [#outExt=.gif] [if IO.get("ext") != ".gif"]
+- .bmp [#outExt=.bmp] [if IO.get("ext") != ".bmp"]
+- .tiff [#outExt=.tiff] [if IO.get("ext") != ".tiff" and IO.get("ext") != ".tif"]
+- .ico [#outExt=.ico] [if IO.get("ext") != ".ico"]
+=> END

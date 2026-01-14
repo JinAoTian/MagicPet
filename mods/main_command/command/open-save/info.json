@@ -1,0 +1,5 @@
+{
+    "name":"save",
+    "group":"config",
+    "wait":true
+}

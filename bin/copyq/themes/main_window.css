@@ -1,0 +1,47 @@
+#searchBar{${search_bar}}
+
+#searchBar:focus{${search_bar_focused}}
+
+#tab_bar{${tab_bar_css}}
+#tab_bar::tab:selected{${tab_bar_tab_selected_css}}
+#tab_bar::tab:!selected{${tab_bar_tab_unselected_css}}
+#tab_bar #tab_item_counter{${tab_bar_item_counter}}
+#tab_bar #tab_item_counter[CopyQ_selected="true"]{
+    ;${tab_bar_sel_item_counter}
+}
+
+#tab_bar QToolButton{${tab_bar_scroll_buttons_css}}
+
+#tab_tree, #tab_tree_item{${tab_tree_css}}
+
+#tab_tree::item:selected
+,#tab_tree_item[CopyQ_selected="true"]
+{
+    ;${tab_tree_sel_item_css}
+}
+
+#tab_tree_item[CopyQ_selected="false"]
+,#tab_tree_item[CopyQ_selected="true"]
+{
+    ;background: transparent
+}
+
+#tab_tree #tab_item_counter{${tab_tree_item_counter}}
+#tab_tree #tab_item_counter[CopyQ_selected="true"]{
+    ;${tab_tree_sel_item_counter}
+}
+
+#MainWindow>QToolBar QToolButton{
+    ;color: ${fg}
+    ;background: ${bg}
+}
+#MainWindow>QToolBar{${tool_bar_css}}
+#MainWindow>QToolBar QToolButton{${tool_button_css}}
+#MainWindow>QToolBar QToolButton:hover{${tool_button_selected_css}}
+#MainWindow>QToolBar QToolButton:pressed{${tool_button_pressed_css}}
+
+${css:main_window_simple}
+
+${css:menu}
+
+${css}

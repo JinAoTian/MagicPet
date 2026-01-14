@@ -1,0 +1,8 @@
+{
+    "name":"download-video",
+    "tool":"yt-dlp",
+    "batch":true,
+    "multi":true,
+    "wait":true,
+    "showOut":true
+}
