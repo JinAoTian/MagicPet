@@ -51,6 +51,7 @@ public static class CommandLoader
                     var info = LoadUtil.FromJson<脚本信息>(配置文件路径);
                     if(info==null)continue;
                     info.Path = 脚本目录;
+                    info.ModPath = ModLoader.模组路径;
                     info.LoadIcon();
                     if (string.IsNullOrEmpty(info.group))
                     {

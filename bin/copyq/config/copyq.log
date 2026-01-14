@@ -41,3 +41,4 @@
 [2026-01-14 11:59:58.741] Warning <cmd/monitorClipboard-27132>: [qt.qpa.mime] Retrying to obtain clipboard.
 [2026-01-14 12:00:20.099] Warning <Server-26932>: CopyQ 服务端已在运行了。
 [2026-01-14 12:19:53.671] Warning <cmd/monitorClipboard-27132>: [qt.qpa.mime] Retrying to obtain clipboard.
+[2026-01-14 21:18:25.334] Warning <Server-2248>: CopyQ 服务端已在运行了。

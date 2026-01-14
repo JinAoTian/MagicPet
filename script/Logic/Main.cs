@@ -324,6 +324,7 @@ public class 脚本信息
     public bool wait;
     public bool showOut;
     public string Path;
+    public string ModPath;
     public Texture2D IconImg;
 
     public void LoadIcon()
