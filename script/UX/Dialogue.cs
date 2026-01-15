@@ -71,7 +71,7 @@ public partial class Dialogue : Node
         选项菜单.Size = new Vector2I(20, 8);
         选项菜单.MaxSize = new Vector2I(选项菜单.MaxSize.X, (int)(viewportSize.Y/3));
         选项菜单.Position = new Vector2I((int)x, (int)y);
-        选项菜单.Show();
+        选项菜单.Popup();
     }
     public static void 文件处理完成()
     {
@@ -119,8 +119,7 @@ public partial class Dialogue : Node
                 return;
             case 6174:
                 _选项类型 = E选项类型.脚本;
-                显示脚本选项();
-                显示标题(_脚本选项标题);
+                _单例.CallDeferred(nameof(显示脚本选项));
                 return;
             default:
                 switch (_选项类型)
