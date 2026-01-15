@@ -203,8 +203,8 @@ public partial class Dialogue : Node
         var 脚本 = Main.当前脚本;
         单例显示标题(Tr(line.Text));
         选项菜单.Clear();
-        _当前回复列表 = line.Responses; 
-        
+        _当前回复列表 = line.Responses;
+        var cnt = 1;
         if (_当前回复列表.Count > 0)
         {
             for (var i = 0; i < _当前回复列表.Count; i++)
@@ -226,7 +226,7 @@ public partial class Dialogue : Node
                         }
                     }
                     选项菜单.AddIconItem(IconMap[iconpath],Tr(选项.Text), i);
-                    ShortCutUtil.BindShortCut( _单例.选项菜单,i,i+1);
+                    ShortCutUtil.BindShortCut( _单例.选项菜单,i,cnt++);
                 }
             }
         }
