@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bijuvf6qjvh7l"]
+[gd_scene load_steps=13 format=3 uid="uid://bijuvf6qjvh7l"]
 
 [ext_resource type="Script" uid="uid://crg6er7ge5r6p" path="res://script/Loader/ModLoader.cs" id="1_80cx4"]
 [ext_resource type="Script" uid="uid://cf0h0dtbopy88" path="res://script/UX/Context.cs" id="4_7jktm"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bo1bs0tbllods" path="res://script/UX/WindowHide.cs" id="6_j5wjh"]
 [ext_resource type="Script" uid="uid://cis2a0filoirf" path="res://script/Logic/FileDrop.cs" id="6_vef74"]
 [ext_resource type="Resource" uid="uid://ic3t0ys3qxm1" path="res://resource/icon.tres" id="8_vef74"]
+[ext_resource type="Script" uid="uid://206qit1gpyuh" path="res://script/UX/PopupMenuShortUpHandle.cs" id="9_mfdv2"]
 [ext_resource type="Script" uid="uid://1l0nnfmcpqp" path="res://script/UX/Dialogue.cs" id="9_vef74"]
 [ext_resource type="Script" uid="uid://be34u7vjgk822" path="res://script/UX/CharAnim.cs" id="17_e8heu"]
 
@@ -48,6 +49,8 @@ IconResource = ExtResource("8_vef74")
 oversampling_override = 1.0
 size = Vector2i(20, 8)
 max_size = Vector2i(32768, 256)
+allow_search = false
+script = ExtResource("9_mfdv2")
 
 [node name="Dialogue" type="Node" parent="." node_paths=PackedStringArray("选项菜单", "标题")]
 script = ExtResource("9_vef74")
