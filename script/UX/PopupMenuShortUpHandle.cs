@@ -9,7 +9,6 @@ public partial class PopupMenuShortUpHandle : PopupMenu
         // 1. 基础检查：如果是回声（按住不放）或者不是按下事件，直接返回
         if (@event.IsEcho() || !@event.IsPressed()) 
             return;
-        GD.Print("按下");
         // 2. 遍历 PopupMenu 中所有的 Item
         for (var i = 0; i < ItemCount; i++)
         {
@@ -19,7 +18,6 @@ public partial class PopupMenuShortUpHandle : PopupMenu
     
             // 获取该项关联的 Shortcut
             var sc = GetItemShortcut(i);
-            GD.Print(sc!=null);
             // 3. 核心：检查 Shortcut 是否存在且与当前输入匹配
             if (sc != null && sc.MatchesEvent(@event))
             {

@@ -74,6 +74,7 @@ vertical_alignment = 2
 oversampling_override = 1.0
 size = Vector2i(20, 8)
 max_size = Vector2i(32768, 256)
+script = ExtResource("9_mfdv2")
 
 [node name="ModLoader" type="Node" parent="."]
 script = ExtResource("1_80cx4")

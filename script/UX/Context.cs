@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using desktop.script.Asset;
 using desktop.script.Loader;
 using desktop.script.logic;
+using desktop.script.Util;
 using Godot;
 
 namespace desktop.script.UX;
@@ -23,17 +24,29 @@ public partial class Context : Node
         右键菜单.AddThemeFontSizeOverride("font_size", 24);
         右键菜单.IdPressed += OnMenuItemPressed;
     }
-    public override void _Input(InputEvent @event)
+    public override void _UnhandledInput(InputEvent @event)
     {
+        // 1. 处理右键打开菜单
         if (@event is InputEventMouseButton { Pressed: true } mouseEvent)
         {
-            if (mouseEvent.ButtonIndex == MouseButton.Right)
+            switch (mouseEvent.ButtonIndex)
             {
-               ShowMenuAtMouse();
-            }
-            else if (mouseEvent.ButtonIndex == MouseButton.Left)
-            {
-                右键菜单.Hide();
+                case MouseButton.Right:
+                    ShowMenuAtMouse();
+                    // 标记输入已处理，防止事件继续传递给下层节点
+                    //GetViewport().SetInputAsHandled();
+                    break;
+                case MouseButton.Left:
+                {
+                    // 2. 优化左键关闭逻辑
+                    // 检查点击位置：只有当点击不在菜单范围内时，才手动隐藏
+                    // PopupMenu 默认点击内部会自动处理，我们只需要处理点击外部的情况
+                    if (右键菜单.Visible && !右键菜单.GetVisibleRect().HasPoint(mouseEvent.Position))
+                    {
+                        右键菜单.Hide();
+                    }
+                    break;
+                }
             }
         }
     }
@@ -75,6 +88,7 @@ public partial class Context : Node
         foreach (var 脚本信息 in 直接指令列表)
         {
            右键菜单.AddIconItem(脚本信息.IconImg,_单例.Tr(脚本信息.name),cnt);
+           ShortCutUtil.BindShortCut(右键菜单,cnt,cnt);
            cnt++;
         }
         foreach (var key in 直接指令组脚本映射.Keys)
@@ -83,15 +97,20 @@ public partial class Context : Node
             {
                 脚本组列表.Add(key);
                 右键菜单.AddIconItem(脚本组信息.IconImg,_单例.Tr(脚本组信息.name),cnt);
+                ShortCutUtil.BindShortCut(右键菜单,cnt,cnt);
             }
             cnt++;
         }
+
         右键菜单.AddIconItem(_单例.IconResource.关机图标,_单例.Tr("close"), 0);
         右键菜单.AddIconItem(_单例.IconResource.取消图标,_单例.Tr("cancel"),114514);
+        ShortCutUtil.BindShortCut(右键菜单,0,0);
+        //ShortCutUtil.BindShortCut(右键菜单,114514,"Escape");
     }
 
     private static void OnMenuItemPressed(long id)
     {
+        _单例.右键菜单.Hide();
         if(id==114514)return;
         switch (id)
         {

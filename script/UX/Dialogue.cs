@@ -76,10 +76,13 @@ public partial class Dialogue : Node
     public static void 文件处理完成()
     {
         _选项类型 = E选项类型.处理完成;
+        var 选项菜单 = _单例.选项菜单;
         显示标题(_单例.Tr("done"));
-        _单例.选项菜单.Clear();
-        _单例.选项菜单.AddIconItem(_单例.IconResource.目录图标,_单例.Tr("opendir"),0);
-        _单例.选项菜单.AddIconItem(_单例.IconResource.复制图标,_单例.Tr("copy"),1);
+        选项菜单.Clear();
+        选项菜单.AddIconItem(_单例.IconResource.目录图标,_单例.Tr("opendir"),0);
+        选项菜单.AddIconItem(_单例.IconResource.复制图标,_单例.Tr("copy"),1);
+        ShortCutUtil.BindShortCut(选项菜单,0,1);
+        ShortCutUtil.BindShortCut(选项菜单,1,2);
         _单例.底部居中显示();
     }
     public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问) where T : 脚本信息
@@ -100,12 +103,14 @@ public partial class Dialogue : Node
         {
             var name = _单例.Tr(脚本信息.name);
             _单例.选项菜单.AddIconItem(脚本信息.IconImg,name,cnt);
+            ShortCutUtil.BindShortCut( _单例.选项菜单,cnt,cnt+1);
             cnt++;
         }
         _单例.底部居中显示();
     }
     private static void OnMenuItemPressed(long id)
     {
+        _单例.选项菜单.Hide();
         switch (id)
         {
             case 114514:
@@ -221,6 +226,7 @@ public partial class Dialogue : Node
                         }
                     }
                     选项菜单.AddIconItem(IconMap[iconpath],Tr(选项.Text), i);
+                    ShortCutUtil.BindShortCut( _单例.选项菜单,i,i+1);
                 }
             }
         }
@@ -230,6 +236,7 @@ public partial class Dialogue : Node
         }
 
         if (脚本列表.Count>0)选项菜单.AddIconItem(IconResource.返回图标,Tr("返回"),6174);
+        ShortCutUtil.BindShortCut( _单例.选项菜单,6174,0);
         底部居中显示();
     }
     public static void 脚本结束()
