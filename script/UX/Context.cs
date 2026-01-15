@@ -65,15 +65,13 @@ public partial class Context : Node
         右键菜单.MaxSize = new Vector2I(右键菜单.MaxSize.X, (int)windowSize.Y/3);
         右键菜单.Position = (Vector2I)finalPos.Clamp(Vector2.Zero, windowSize);
         右键菜单.Show();
-        右键菜单.Unfocusable = true;
     }
-
+    
     public static void 显示指令列表()
     {
         var 右键菜单 = _单例.右键菜单;
         右键菜单.Clear();
-        var cnt = 0;
-        右键菜单.AddIconItem(_单例.IconResource.关机图标,_单例.Tr("close"), cnt++);
+        var cnt = 1;
         foreach (var 脚本信息 in 直接指令列表)
         {
            右键菜单.AddIconItem(脚本信息.IconImg,_单例.Tr(脚本信息.name),cnt);
@@ -88,8 +86,10 @@ public partial class Context : Node
             }
             cnt++;
         }
+        右键菜单.AddIconItem(_单例.IconResource.关机图标,_单例.Tr("close"), 0);
         右键菜单.AddIconItem(_单例.IconResource.取消图标,_单例.Tr("cancel"),114514);
     }
+
     private static void OnMenuItemPressed(long id)
     {
         if(id==114514)return;

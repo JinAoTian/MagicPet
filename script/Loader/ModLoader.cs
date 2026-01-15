@@ -16,7 +16,7 @@ public partial class ModLoader : Node
     public override void _Ready()
     {
         遍历模组目录(Main.ModPath,false);
-        遍历模组目录(OS.GetExecutablePath().GetBaseDir(),true);//steam加载逻辑
+        遍历模组目录(OS.GetExecutablePath().GetBaseDir().GetBaseDir(),true);//steam加载逻辑
         Context.显示指令列表();
         CharAnim.载入人物动画();
     }

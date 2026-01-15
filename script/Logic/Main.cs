@@ -25,7 +25,7 @@ public partial class Main:Node
     public const string 本地化文件名 = "i18n.csv";
     public const string 配置文件名 = "info.json";
     public const string 脚本组文件名 = "group.json";
-    public const string 工具配置文件名 = "toolPath.json";
+    public const string 工具配置文件名 = "tool.json";
     private const string 预处理函数名 = "prepare";
     private const string 对话文件名 = "option.dialogue";
     private const string 配置信息文件名 = "config.json";
@@ -57,7 +57,7 @@ public partial class Main:Node
         IO.单例.setG("config",ConfigPath);
         IO.单例.setG("mod",ModPath);
         IO.单例.setG("save",GetOutputDir());
-        OS.ExecuteWithPipe(GetExternalToolPath("copyq"),[]);
+        //OS.ExecuteWithPipe(GetExternalToolPath("copyq"),[]);
     }
     public static bool IgnorePath(string path) => Path.GetFileName(path).StartsWith("_");
     public static void 选择脚本(脚本信息 脚本信息)
@@ -124,7 +124,7 @@ public partial class Main:Node
 
         // 直接调用通用提取函数
         RunScriptTask(脚本信息, 执行函数名, "执行函数完成");
-        Dialogue.对话结束();
+        Dialogue.脚本结束();
     }
 
     public void 处理路径(string[] keys, Dictionary<string, 抬头信息> 索引映射,Dictionary<string, List<索引脚本信息>> 脚本映射,List<索引脚本信息>通用脚本列表,string Ask)

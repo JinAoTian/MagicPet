@@ -72,7 +72,6 @@ public partial class Dialogue : Node
         选项菜单.MaxSize = new Vector2I(选项菜单.MaxSize.X, (int)(viewportSize.Y/3));
         选项菜单.Position = new Vector2I((int)x, (int)y);
         选项菜单.Show();
-        选项菜单.Unfocusable = true;
     }
     public static void 文件处理完成()
     {
@@ -111,7 +110,7 @@ public partial class Dialogue : Node
         {
             case 114514:
                 _选项类型 = E选项类型.无;
-                对话结束();
+                脚本结束();
                 return;
             case 6174:
                 _选项类型 = E选项类型.脚本;
@@ -146,9 +145,7 @@ public partial class Dialogue : Node
                         }
                         else if (_当前回复列表 == null || _当前回复列表.Count == 0)
                         {
-                            // 处理没有选项时的“点击继续”逻辑（例如 line.NextId）
-                            // 此时通常需要从 line 对象中预存 next_id
-                            进行对话("对话结束标记或具体ID"); 
+                            对话结束();
                         }
                         break;
                 }
@@ -168,6 +165,13 @@ public partial class Dialogue : Node
         进行对话("start");
     }
 
+    private static void 对话结束()
+    {
+        
+        关闭标题(); // 对话结束
+        _选项类型 = E选项类型.无;
+        Main.对话结束();
+    }
     private static async void 进行对话(string 节点)
     {
         try
@@ -180,9 +184,7 @@ public partial class Dialogue : Node
             }
             else
             {
-                关闭标题(); // 对话结束
-                _选项类型 = E选项类型.无;
-                Main.对话结束();
+                对话结束();
             }
         }
         catch (Exception e)
@@ -230,7 +232,7 @@ public partial class Dialogue : Node
         if (脚本列表.Count>0)选项菜单.AddIconItem(IconResource.返回图标,Tr("返回"),6174);
         底部居中显示();
     }
-    public static void 对话结束()
+    public static void 脚本结束()
     {
         脚本列表.Clear();
     }
