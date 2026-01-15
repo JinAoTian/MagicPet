@@ -25,17 +25,17 @@ public partial class Main:Node
     public const string 本地化文件名 = "i18n.csv";
     public const string 配置文件名 = "info.json";
     public const string 脚本组文件名 = "group.json";
+    public const string 工具配置文件名 = "toolPath.json";
     private const string 预处理函数名 = "prepare";
     private const string 对话文件名 = "option.dialogue";
-    private const string 工具配置文件名 = "toolPath.json";
     private const string 配置信息文件名 = "config.json";
     private static string BinPath => GetProjectPath("bin");
     private static string ConfigPath => GetProjectPath("config");
     public static string ModPath => GetProjectPath("mods");
     public static readonly Dictionary<string, 人物数据> 人物字典 = new();
     public static 人物数据 显示人物 => 人物字典[_配置信息字典.GetValueOrDefault("当前人物","loris")];
-    private static Dictionary<string, string> _工具路径字典;
-    private static Dictionary<string, string> _配置信息字典;
+    public static Dictionary<string, string> 工具路径字典=new();
+    private static Dictionary<string, string> _配置信息字典=new();
     public static Main _单例;
     public static 脚本信息 当前脚本;
     public override void _Ready()
@@ -43,7 +43,14 @@ public partial class Main:Node
         _单例 = this;
         //TranslationServer.SetLocale("ru");
         var path = ConfigPath;
-        _工具路径字典 = LoadUtil.FromJson<Dictionary<string, string>>(Path.Combine(path,工具配置文件名));
+        var 工具字典 = LoadUtil.FromJson<Dictionary<string, string>>(Path.Combine(path,工具配置文件名));
+        if (工具字典!=null)
+        {
+            foreach (var (k,v) in 工具字典)
+            {
+                工具路径字典[k] = v;
+            }
+        }
         _配置信息字典 = LoadUtil.FromJson<Dictionary<string, string>>(Path.Combine(path,配置信息文件名));
         LoadUtil.LoadI18nCSV(Path.Combine(path,本地化文件名));
         IO.单例.setG("bin",BinPath);
@@ -58,6 +65,7 @@ public partial class Main:Node
         当前脚本 = 脚本信息;
         IO.单例.set("tool",GetExternalToolPath(脚本信息.tool));
         IO.单例.set("script",脚本信息.Path);
+        IO.单例.set("mod",脚本信息.ModPath);
         IO.单例.set("out",GetOutputDir());
         if (脚本信息.option)
         {
@@ -127,15 +135,7 @@ public partial class Main:Node
         {
             // ReSharper disable once AssignNullToNotNullAttribute
             var 询问 = (IndexLoader.文件索引映射.TryGetValue(extension, out var 抬头信息) )? 抬头信息.name : ask;
-            if (IndexLoader.文件脚本映射.TryGetValue(extension,out var list))
-            {
-
-                显示脚本选择(list,通用脚本列表,询问);
-            }
-            else
-            {
-                显示脚本选择([],通用脚本列表,询问);
-            }
+            显示脚本选择(IndexLoader.文件脚本映射.TryGetValue(extension, out var list) ? list : [], 通用脚本列表, 询问);
         }
         else if (keys.Length > 1)
         {
@@ -260,7 +260,7 @@ public partial class Main:Node
     public static string GetExternalToolPath(string toolName)
     {
         if (string.IsNullOrEmpty(toolName)) return null;
-        if (_工具路径字典.TryGetValue(toolName,out var path) && Path.Exists(path))
+        if (工具路径字典.TryGetValue(toolName,out var path) && Path.Exists(path))
         {
             return path;
         }

@@ -22,7 +22,6 @@ public partial class ClipboardRead : Node
         // bool isCtrlPressed = Input.IsKeyPressed(Key.Ctrl) || Input.IsKeyPressed(Key.Meta);
 
         if (isCtrlPressed && @event is InputEventKey { Pressed: true, Keycode: Key.V })
-            // 3. 判断具体的按键 F 或 V
         {
             var clipboardContent = DisplayServer.ClipboardGet();
             if (!string.IsNullOrEmpty(clipboardContent))
