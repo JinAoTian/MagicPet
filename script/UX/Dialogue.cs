@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using desktop.script.Asset;
+using desktop.script.Loader;
 using desktop.script.logic;
 using desktop.script.Util;
 using DialogueManagerRuntime;
@@ -80,9 +80,15 @@ public partial class Dialogue : Node
         显示标题(_单例.Tr("done"));
         选项菜单.Clear();
         选项菜单.AddIconItem(_单例.IconResource.目录图标,_单例.Tr("opendir"),0);
-        选项菜单.AddIconItem(_单例.IconResource.复制图标,_单例.Tr("copy"),1);
         ShortCutUtil.BindShortCut(选项菜单,0,1);
-        ShortCutUtil.BindShortCut(选项菜单,1,2);
+        var cnt = 1;
+        foreach (var 脚本信息 in CommandLoader.展示指令列表)
+        {
+            var name = _单例.Tr(脚本信息.name);
+            _单例.选项菜单.AddIconItem(脚本信息.IconImg,name,cnt);
+            ShortCutUtil.BindShortCut( _单例.选项菜单,cnt,cnt+1);
+            cnt++;
+        }
         _单例.底部居中显示();
     }
     public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问) where T : 脚本信息
@@ -127,13 +133,13 @@ public partial class Dialogue : Node
                     case E选项类型.无:
                         return;
                     case E选项类型.脚本:
-                        if (_选项类型==E选项类型.脚本 && 脚本列表!=null)
+                        if (_选项类型==E选项类型.脚本 && 脚本列表!=null && id < 脚本列表.Count)
                         {
                             Main.选择脚本(脚本列表[(int)id]);
                         }
                         break;
                     case E选项类型.处理完成:
-                        文件处理完成回调(id);
+                        文件处理完成回调((int)id);
                         break;
                     case E选项类型.对话:
                         if (_当前回复列表 != null && _当前回复列表.Count > (int)id)
@@ -248,37 +254,18 @@ public partial class Dialogue : Node
 
     #region 复制剪切
 
-    private static void 文件处理完成回调(long id)
+    private static void 文件处理完成回调(int id)
     {
-        var files = IO.单例.get("result").As<string[]>();
-        var copyqPath = Main.GetExternalToolPath("copyq");
-
         if (id == 0)
         {
             OS.ShellOpen((string)IO.单例.get("out"));
             return; 
         }
-
-        GD.Print(copyqPath);
-        if (files == null || files.Length == 0) return;
-
-        // 1. 核心格式：将路径转换为 RFC 3986 标准的 URI 列表 (file:///C:/...)
-        // 这是文件管理器（Explorer）识别文件对象的唯一标准格式
-        var uris = files.Select(f => {
-            var absPath = ProjectSettings.GlobalizePath(f).Replace("\\", "/");
-            // Windows 绝对路径需要 3 个斜杠: file:///
-            return absPath.StartsWith("/") ? $"file://{absPath}" : $"file:///{absPath}";
-        });
-        var uriData = string.Join("\n", uris);
-
-        // 2. 编写 CopyQ 脚本
-        // - copy('text/uri-list', ...): 设置文件路径列表
-        // - Preferred DropEffect: 这是 Windows 特有的，2 表示剪切 (Cut)，1 或不设置表示复制 (Copy)
-        var script=$@"copy('text/uri-list', `{uriData}`);";
-        // 3. 执行 eval 命令
-        // 使用数组传递参数以防止 shell 路径中的空格导致解析失败
-        string[] args = ["eval", script];
-        OS.Execute(copyqPath, args);
+        IO.单例.set("in",IO.单例.get("result"));
+        if (id <= CommandLoader.展示指令列表.Count)
+        {
+            Main.选择脚本( CommandLoader.展示指令列表[id-1]);
+        }
     }
     #endregion
 }

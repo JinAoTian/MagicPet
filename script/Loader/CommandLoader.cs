@@ -17,12 +17,17 @@ public static class CommandLoader
     public static readonly Dictionary<string, List<脚本信息>> 直接指令组脚本映射 = new();    
     private const string 文本目录名 = "txt";
     public static readonly List<脚本信息> 文本指令列表 = new();
-    public static readonly Dictionary<string, 脚本组信息> 文本指令组映射 = new();
-    public static readonly Dictionary<string, List<脚本信息>> 文本指令组脚本映射 = new();
+    private static readonly Dictionary<string, 脚本组信息> 文本指令组映射 = new();
+    private static readonly Dictionary<string, List<脚本信息>> 文本指令组脚本映射 = new();
+    private const string 展示目录名 = "showOut";
+    public static readonly List<脚本信息> 展示指令列表 = new();
+    private static readonly Dictionary<string, 脚本组信息> 展示指令组映射 = new();
+    private static readonly Dictionary<string, List<脚本信息>> 展示指令组脚本映射 = new();
     public static void 加载指令脚本(string 路径)
     {
         加载指令(Path.Combine(路径, 直接目录名),直接指令列表,直接指令组映射,直接指令组脚本映射);
         加载指令(Path.Combine(路径, 文本目录名),文本指令列表,文本指令组映射,文本指令组脚本映射);
+        加载指令(Path.Combine(路径, 展示目录名),展示指令列表,展示指令组映射,展示指令组脚本映射);
     }
     private static void 加载指令(string 总目录,List<脚本信息> 指令列表,Dictionary<string, 脚本组信息>指令组映射,Dictionary<string, List<脚本信息>>指令组脚本映射)
     {
