@@ -26,6 +26,7 @@ public partial class Main:Node
     public const string 配置文件名 = "info.json";
     public const string 脚本组文件名 = "group.json";
     public const string 工具配置文件名 = "tool.json";
+    public const string 初始化配置文件名 = "init.json";
     private const string 预处理函数名 = "prepare";
     private const string 对话文件名 = "option.dialogue";
     private const string 配置信息文件名 = "config.json";
@@ -57,7 +58,14 @@ public partial class Main:Node
         IO.单例.setG("config",ConfigPath);
         IO.单例.setG("mod",ModPath);
         IO.单例.setG("save",GetOutputDir());
-        //OS.ExecuteWithPipe(GetExternalToolPath("copyq"),[]);
+        var 初始化列表 = LoadUtil.FromJson<List<初始化信息>>(Path.Combine(path,初始化配置文件名));
+        if (初始化列表!=null)
+        {
+            foreach (var 初始化信息 in 初始化列表)
+            {
+                OS.ExecuteWithPipe(GetExternalToolPath(初始化信息.tool),初始化信息.arguments);
+            }
+        }
     }
     public static bool IgnorePath(string path) => Path.GetFileName(path).StartsWith("_");
     public static void 选择脚本(脚本信息 脚本信息)
@@ -365,4 +373,10 @@ public class 动画信息
     public int rate;
     public string Type;
     public string Path;
+}
+
+public class 初始化信息
+{
+    public string tool;
+    public string[] arguments = [];
 }
