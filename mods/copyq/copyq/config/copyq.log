@@ -46,3 +46,5 @@
 [2026-01-15 09:50:19.392] Warning <Server-21400>: CopyQ 服务端已在运行了。
 [2026-01-15 19:39:47.251] Warning <Server-6388>: CopyQ 服务端已在运行了。
 [2026-01-15 19:41:08.134] Warning <Server-33432>: CopyQ 服务端已在运行了。
+[2026-01-16 09:44:10.809] Note <Server-14596>: Starting server: CopyQ 13.0.0
+[2026-01-16 09:44:10.919] Warning <Server-14596>: [default] QSystemTrayIcon::setVisible: No Icon set
