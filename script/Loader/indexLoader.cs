@@ -48,7 +48,7 @@ public static class IndexLoader
                     var info = LoadUtil.FromJson<索引脚本信息>(配置文件路径);
                     info.Path = 脚本目录;
                     info.ModPath = ModLoader.模组路径;
-                    info.LoadIcon();
+                    Main.注册脚本信息(info);
                     if (info.extensions!=null)
                     {
                         foreach (var 索引 in info.extensions)

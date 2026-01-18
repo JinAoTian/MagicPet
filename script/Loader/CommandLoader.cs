@@ -57,7 +57,7 @@ public static class CommandLoader
                     if(info==null)continue;
                     info.Path = 脚本目录;
                     info.ModPath = ModLoader.模组路径;
-                    info.LoadIcon();
+                    Main.注册脚本信息(info);
                     if (string.IsNullOrEmpty(info.group))
                     {
                         指令列表.Add(info);

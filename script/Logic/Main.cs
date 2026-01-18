@@ -134,7 +134,14 @@ public partial class Main:Node
         RunScriptTask(脚本信息, 执行函数名, "执行函数完成");
         Dialogue.脚本结束();
     }
-
+    public static void 注册脚本信息(脚本信息 脚本信息)
+    {
+        脚本信息.LoadIcon();
+        if (!string.IsNullOrEmpty(脚本信息.config))
+        {
+            脚本信息.config = Path.Combine(脚本信息.Path,脚本信息.config);
+        }
+    }
     public void 处理路径(string[] keys, Dictionary<string, 抬头信息> 索引映射,Dictionary<string, List<索引脚本信息>> 脚本映射,List<索引脚本信息>通用脚本列表,string Ask)
     {
         var extension = Path.GetExtension(keys[0]);
@@ -331,10 +338,10 @@ public class 脚本信息
     public bool prepare;
     public bool wait;
     public bool showOut;
+    public string config;
     public string Path;
     public string ModPath;
     public Texture2D IconImg;
-
     public void LoadIcon()
     {
         if (string.IsNullOrEmpty(icon) || !ImageUtil.Loadimage(System.IO.Path.Combine(Path,icon),out var image))
