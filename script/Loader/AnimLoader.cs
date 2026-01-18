@@ -39,10 +39,13 @@ public static class AnimLoader
                         {
                             var 动画名 = $"{类型名}-{Path.GetFileName(动画名目录)}";
                             var info = LoadUtil.FromJson<动画信息>(配置文件路径);
-                            info.Name = 动画名;
+                            if (string.IsNullOrEmpty(info.name))
+                            {
+                                info.name = 动画名;
+                            }
                             info.Path = 动画名目录;
                             info.Type = 类型名;
-                            人物.动画信息映射[动画名] = info;
+                            人物.动画信息映射[info.name] = info;
                             人物.动画池字典[类型名].Add(info);
                         }
                         catch (Exception ex)

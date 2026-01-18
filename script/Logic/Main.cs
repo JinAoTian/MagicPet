@@ -401,8 +401,9 @@ public class 抬头信息
 }
 public class 动画信息
 {
-    public string Name;
     public int rate;
+    public string name;
+    public List<string> nextClip;
     public string Type;
     public string Path;
 }

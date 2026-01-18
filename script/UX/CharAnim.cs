@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using desktop.script.Loader;
 using desktop.script.logic;
 using Godot;
 
@@ -12,11 +11,17 @@ public partial class CharAnim : AnimatedSprite2D
     private static CharAnim _单例;
     private static string _退出动画名;
     private static 人物数据 显示人物 => Main.显示人物;
+    private const int Idle循环下限 = 8;
+    private const int Idle循环上限 = 16;
+    private static int _fidget触发次数;
+    private static int _idle循环次数;
+    private static readonly List<string> 内置动画组 = ["idle", "celerate","drag","dragup","dragdown","fidget"];
     public override void _Ready()
     {
         // 直接给自己的 AnimationFinished 信号绑定方法
         AnimationFinished += OnAnimationFinished;
         _单例 = this;
+        _fidget触发次数 = Random.Shared.Next(Idle循环下限, Idle循环上限 + 1);
     }
     private void OnAnimationFinished()
     {
@@ -26,17 +31,31 @@ public partial class CharAnim : AnimatedSprite2D
         switch (动画类型)
         {
             case "enter":
-                SpriteFrames.RemoveAnimation(动画数据.Name);//入场动画无用了
-                Play(人物数据.动画池字典["idle"].列表随机项().Name);
+                SpriteFrames.RemoveAnimation(动画数据.name);//入场动画无用了
+                _idle循环次数 = 0;
+                进入状态("idle");
                 break;
             case "drag":
             case "dragup":
-                Play(人物数据.动画池字典["drag"].列表随机项().Name);
+                进入状态("drag");
                 break;
-            case "idle":
             case "celerate":
             case "dragdown":
-                Play(人物数据.动画池字典["idle"].列表随机项().Name);
+            case "fidget":
+                _idle循环次数 = 0;
+                进入状态("idle");
+                break;
+            case "idle":
+                _idle循环次数++;
+                if (_idle循环次数>=_fidget触发次数)
+                {
+                    _fidget触发次数 = Random.Shared.Next(Idle循环下限, Idle循环上限 + 1);
+                    进入状态("fidget");
+                }
+                else
+                {
+                    进入状态("idle");
+                }
                 break;
             case "exit":
                 GetTree().Quit();
@@ -47,7 +66,6 @@ public partial class CharAnim : AnimatedSprite2D
     {
         _单例.Play(_退出动画名);
     }
-
     public static void 开始庆祝() => 进入状态("celerate");
     public static void 开始拖拽()=>进入状态("dragup");
     public static void 结束拖拽()=>进入状态("dragdown");
@@ -55,7 +73,15 @@ public partial class CharAnim : AnimatedSprite2D
     {
         if (显示人物.动画池字典.TryGetValue(id,out var list) && list.Count>0)
         {
-            _单例.Play(list.列表随机项().Name);
+            _单例.Play(list.列表随机项().name);
+        }
+        else
+        {
+            if (id!="idle")
+            {
+                // ReSharper disable once TailRecursiveCall
+                进入状态("idle");
+            }
         }   
     }
     public static void 载入人物动画()
@@ -63,16 +89,15 @@ public partial class CharAnim : AnimatedSprite2D
         var 人物 = 显示人物;
         var 状态机 = _单例.SpriteFrames;
         var 进入动画 = 人物.动画池字典["enter"].列表随机项();
-        加载动画(状态机,进入动画);
-        _单例.Play(进入动画.Name);//先显示,再加载后面动画
-        加载动画组(人物,"idle");
-        加载动画组(人物,"celerate");
-        加载动画组(人物,"drag");
-        加载动画组(人物,"dragdown");
-        加载动画组(人物,"dragup");
         var 退出动画 = 人物.动画池字典["exit"].列表随机项();
+        加载动画(状态机,进入动画);
+        _单例.Play(进入动画.name);//先显示,再加载后面动画
+        foreach (var 动画组 in 内置动画组)
+        {
+            加载动画组(人物,动画组);
+        }
         加载动画(状态机,退出动画);
-        _退出动画名 = 退出动画.Name;
+        _退出动画名 = 退出动画.name;
     }
     private static void 加载动画组(人物数据 人物,string id)
     {
@@ -84,7 +109,7 @@ public partial class CharAnim : AnimatedSprite2D
             }
         }
     }
-    private static void 加载动画(SpriteFrames 状态机, 动画信息 动画信息) => 加载动画(状态机,动画信息.Name,动画信息.Path,动画信息.rate);
+    private static void 加载动画(SpriteFrames 状态机, 动画信息 动画信息) => 加载动画(状态机,动画信息.name,动画信息.Path,动画信息.rate);
     private static void 加载动画(SpriteFrames 状态机, string 动画名, string 目录, int 帧率)
     {
         // 1. 检查目录是否存在 (使用绝对路径)
