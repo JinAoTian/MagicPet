@@ -128,7 +128,7 @@ public partial class Context : Node
         if (index<脚本组列表.Count)
         {
             var key = 脚本组列表[index];
-            Dialogue.显示脚本选项(直接指令组脚本映射[key],_单例.Tr(直接指令组映射[key].ask));
+            Dialogue.显示脚本选项(直接指令组脚本映射[key],_单例.Tr(直接指令组映射[key].ask),key=="config");
         }
     }
     public override void _Notification(int what)

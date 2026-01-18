@@ -91,15 +91,15 @@ public partial class Dialogue : Node
         }
         _单例.底部居中显示();
     }
-    public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问) where T : 脚本信息
+    public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问,bool 配置显示=false) where T : 脚本信息
     {
         _选项类型 = E选项类型.脚本;
         脚本列表.Clear();
         脚本列表.AddRange(新脚本列表);
         _脚本选项标题 = 询问;
-        显示脚本选项();
+        显示脚本选项(配置显示);
     }
-    private static void 显示脚本选项()
+    private static void 显示脚本选项(bool 配置显示=false)
     {
         if(脚本列表.Count==0)return;
         if(!string.IsNullOrEmpty(_脚本选项标题))显示标题(_脚本选项标题);
@@ -111,6 +111,16 @@ public partial class Dialogue : Node
             _单例.选项菜单.AddIconItem(脚本信息.IconImg,name,cnt);
             ShortCutUtil.BindShortCut( _单例.选项菜单,cnt,cnt+1);
             cnt++;
+        }
+        if (配置显示)
+        {
+            foreach (var 脚本信息 in Main.配置脚本列表)
+            {
+                var name = _单例.Tr(脚本信息.name)+_单例.Tr("config");
+                _单例.选项菜单.AddIconItem(脚本信息.IconImg,name,cnt);
+                ShortCutUtil.BindShortCut( _单例.选项菜单,cnt,cnt+1);
+                cnt++;
+            }
         }
         _单例.底部居中显示();
     }
@@ -133,9 +143,16 @@ public partial class Dialogue : Node
                     case E选项类型.无:
                         return;
                     case E选项类型.脚本:
-                        if (_选项类型==E选项类型.脚本 && 脚本列表!=null && id < 脚本列表.Count)
+                        if (脚本列表!=null)
                         {
-                            Main.选择脚本(脚本列表[(int)id]);
+                            if (id < 脚本列表.Count)
+                            {
+                                Main.选择脚本(脚本列表[(int)id]);
+                            }
+                            else
+                            {
+                                Main.打开配置((int)id-脚本列表.Count);
+                            }
                         }
                         break;
                     case E选项类型.处理完成:
@@ -249,9 +266,7 @@ public partial class Dialogue : Node
         脚本列表.Clear();
     }
     #endregion
-
-
-
+    
     #region 复制剪切
 
     private static void 文件处理完成回调(int id)

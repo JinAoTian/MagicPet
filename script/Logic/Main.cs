@@ -35,6 +35,7 @@ public partial class Main:Node
     public static string ModPath => GetProjectPath("mods");
     public static readonly Dictionary<string, 人物数据> 人物字典 = new();
     public static 人物数据 显示人物 => 人物字典[_配置信息字典.GetValueOrDefault("当前人物","loris")];
+    public static List<脚本信息> 配置脚本列表 = [];
     public static Dictionary<string, string> 工具路径字典=new();
     private static Dictionary<string, string> _配置信息字典=new();
     public static Main _单例;
@@ -91,6 +92,29 @@ public partial class Main:Node
             运行执行函数(脚本信息);
         }
     }
+
+    public static void 打开配置(int index)
+    {
+        if(index>=配置脚本列表.Count)return;
+        var 配置路径 = 配置脚本列表[index].config;
+        var absolutePath = ProjectSettings.GlobalizePath(配置路径);
+        if (OS.GetName() == "Windows")
+        {
+            // Windows: 使用 powershell 或 cmd 调用 start 指令
+            OS.Execute("cmd.exe", ["/C", "start", "", absolutePath]);
+        }
+        else if (OS.GetName() == "macOS")
+        {
+            // macOS: 使用 open 命令
+            OS.Execute("open", [absolutePath]);
+        }
+        else if (OS.GetName() == "X11") // Linux
+        {
+            // Linux: 使用 xdg-open 命令
+            OS.Execute("xdg-open", [absolutePath]);
+        }
+        CharAnim.开始庆祝();
+    }
     private static async void 加载对话(string absolutePath)
     {
         try
@@ -140,6 +164,7 @@ public partial class Main:Node
         if (!string.IsNullOrEmpty(脚本信息.config))
         {
             脚本信息.config = Path.Combine(脚本信息.Path,脚本信息.config);
+            配置脚本列表.Add(脚本信息);
         }
     }
     public void 处理路径(string[] keys, Dictionary<string, 抬头信息> 索引映射,Dictionary<string, List<索引脚本信息>> 脚本映射,List<索引脚本信息>通用脚本列表,string Ask)
