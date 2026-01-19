@@ -100,33 +100,50 @@ public partial class Main:Node
         }
     }
     public static void 对话结束() => 运行执行函数(当前脚本);
+    private static void 运行执行函数(脚本信息 脚本信息)
+    {
+        if (脚本信息.wait)
+        {
+            Dialogue.显示标题("wait"); 
+        }
+
+        // 直接调用通用提取函数
+        RunScriptTask(脚本信息, 执行函数名, "执行函数完成");
+        Dialogue.脚本结束();
+    }
     private static void 执行函数完成()
     {
         CharAnim.开始庆祝();
+        var tip = string.IsNullOrEmpty(当前脚本.tip) ? "done" : 当前脚本.tip;
+        if (IO.单例.get("tip", out var value))
+        {
+            tip = (string)value;
+        }
         if (当前脚本.showOut)
         {
-            Dialogue.文件处理完成();
+            Dialogue.文件处理完成(tip);
         }
         else
         {
-            Dialogue.关闭标题();
+            if (tip == "done")
+            {
+                Dialogue.关闭标题();
+            }
+            else
+            {
+                _ = Dialogue.显示临时标题(tip);
+            }
         }
+        IO.单例.Info.Clear();
     }
     private static void 运行预处理函数(脚本信息 脚本信息)
     {
         // 直接调用通用提取函数
         RunScriptTask(脚本信息, 预处理函数名, "预处理函数完成");
     }
-    private static void 运行执行函数(脚本信息 脚本信息)
+    private static void 预处理函数完成()
     {
-        if (脚本信息.wait)
-        {
-            Dialogue.显示标题(_单例.Tr("wait")); 
-        }
-
-        // 直接调用通用提取函数
-        RunScriptTask(脚本信息, 执行函数名, "执行函数完成");
-        Dialogue.脚本结束();
+        加载对话(Path.Combine(当前脚本.Path,对话文件名));
     }
     public static void 注册脚本信息(脚本信息 脚本信息)
     {
@@ -156,10 +173,6 @@ public partial class Main:Node
                 GD.PrintErr($"执行脚本 {gdMethodName} 时出错: {e.Message}");
             }
         });
-    }
-    private static void 预处理函数完成()
-    {
-        加载对话(Path.Combine(当前脚本.Path,对话文件名));
     }
 }
 //对外暴露的字段统一用小驼峰敖

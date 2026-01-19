@@ -28,7 +28,17 @@ public partial class IO : Node
             return value;
         }
         return default;
-    }    
+    }
+    public bool get(string key, out Variant value)
+    {
+        if (Info != null && Info.TryGetValue(key, out value))
+        {
+            return true;
+        }
+    
+        value = default;
+        return false;
+    }
     public void setG(string key, Variant value)
     {
         if(Global==null)return;
@@ -41,5 +51,14 @@ public partial class IO : Node
             return value;
         }
         return default;
+    }
+    public bool getG(string key, out Variant value)
+    {
+        if (Global != null && Global.TryGetValue(key, out value))
+        {
+            return true;
+        }
+        value = default;
+        return false;
     }
 }

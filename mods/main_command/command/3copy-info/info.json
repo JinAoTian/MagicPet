@@ -1,5 +1,6 @@
 {
     "name":"copy-info",
     "option":true,
-    "config":"option.dialogue"
+    "config":"option.dialogue",
+    "tip":"copy-finish"
 }

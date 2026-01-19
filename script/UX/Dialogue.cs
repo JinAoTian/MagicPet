@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using desktop.script.Asset;
 using desktop.script.Loader;
 using desktop.script.logic;
@@ -16,6 +17,7 @@ public partial class Dialogue : Node
     [Export] public RichTextLabel 标题;
     [Export] public IconResource IconResource;
     private const float 打字速度 = 20.0f;
+    private const int 标题显示时间 = 3000;
     private static Dialogue _单例;
     private static readonly List<脚本信息> 脚本列表 = new();
     private static E选项类型 _选项类型 = E选项类型.无;
@@ -34,24 +36,46 @@ public partial class Dialogue : Node
     // ReSharper disable once MemberCanBePrivate.Global 外部调用
     public static void 延迟显示标题(string 文本) => _单例.CallDeferred("单例显示标题",文本);
     public static void 显示标题(string 文本) => _单例.单例显示标题(_单例.Tr(文本));
+    private static int _当前标题序列号;
+    public static async Task 显示临时标题(string 文本)
+    {
+        // 每次调用，递增序列号
+        var 当前序列 = ++_当前标题序列号;
+        try
+        {
+            var 翻译文本 = _单例.Tr(文本);
+            _单例.单例显示标题(翻译文本);
+
+            await Task.Delay(标题显示时间);
+            if (_当前标题序列号 == 当前序列)
+            {
+                关闭标题();
+            }
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr($"临时标题异常: {e.Message}");
+        }
+    }
     private void 单例显示标题(string 文本)
     {
-        标题.Visible = true;
+        var t标题 = 标题;
+        t标题.Visible = true;
         
         // 1. 设置带 BBCode 的文本
-        标题.Text = $"[wave][bgcolor=#00000066]{文本}[/bgcolor][/wave]";
+        t标题.Text = $"[wave][bgcolor=#00000066]{文本}[/bgcolor][/wave]";
         
         // 2. 初始可见字符设为 0
-        标题.VisibleCharacters = 0;
+        t标题.VisibleCharacters = 0;
 
         // 3. 计算文本总长度并创建动画
         // GetTotalCharacterCount 会自动忽略 BBCode 标签，只计算实际显示的字符
-        var 总字符数 = 标题.GetTotalCharacterCount();
+        var 总字符数 = t标题.GetTotalCharacterCount();
         var 持续时间 = 总字符数 / 打字速度;
         // 创建 Tween 动画
         var 动画 = _单例.CreateTween();
         动画.TweenProperty(
-            _单例.标题, 
+            t标题, 
             "visible_characters", 
             总字符数, 
             持续时间
@@ -73,11 +97,11 @@ public partial class Dialogue : Node
         选项菜单.Position = new Vector2I((int)x, (int)y);
         选项菜单.Popup();
     }
-    public static void 文件处理完成()
+    public static void 文件处理完成(string tip)
     {
         _选项类型 = E选项类型.处理完成;
         var 选项菜单 = _单例.选项菜单;
-        显示标题(_单例.Tr("done"));
+        显示标题(tip);
         选项菜单.Clear();
         选项菜单.AddIconItem(_单例.IconResource.目录图标,_单例.Tr("opendir"),0);
         ShortCutUtil.BindShortCut(选项菜单,0,1);
@@ -223,7 +247,7 @@ public partial class Dialogue : Node
     {
         _选项类型 = E选项类型.对话;
         var 脚本 = Main.当前脚本;
-        单例显示标题(Tr(line.Text));
+        显示标题(line.Text);
         选项菜单.Clear();
         _当前回复列表 = line.Responses;
         var cnt = 1;
