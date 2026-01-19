@@ -2,20 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using desktop.script.Loader;
-using desktop.script.UX;
+using desktop.script.Logic;
 using Godot;
-using Godot.Collections;
 
 // 引入异步命名空间
 namespace desktop.script.logic;
 
 public partial class FileDrop : Node
 {
-    public static FileDrop _单例;
+    private static FileDrop _单例;
     public override void _Ready()
     {
         GetTree().Root.FilesDropped += OnFilesDropped;
@@ -91,7 +89,7 @@ public partial class FileDrop : Node
 
     private static void FinalizeProcess(string[] paths)
     {
-        Main._单例.处理路径(paths,IndexLoader.文件索引映射,IndexLoader.文件脚本映射,IndexLoader.文件通用脚本列表,"file-ask");
+        IndexMatch.处理路径(paths,IndexLoader.文件索引映射,IndexLoader.文件脚本映射,IndexLoader.文件通用脚本列表,"file-ask");
     }
     [SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]
     private static string GetShortcutTarget(string lnkPath)

@@ -31,7 +31,7 @@ public static class ConfigLoader
         {
             foreach (var 初始化信息 in 初始化列表)
             {
-                OS.ExecuteWithPipe(Main.GetExternalToolPath(初始化信息.tool),初始化信息.arguments);
+                OS.ExecuteWithPipe(LoadUtil.GetExternalToolPath(初始化信息.tool),初始化信息.arguments);
             }
         }
     }

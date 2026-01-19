@@ -73,6 +73,7 @@ public partial class CharAnim : AnimatedSprite2D
     {
         if (显示人物.动画池字典.TryGetValue(id,out var list) && list.Count>0)
         {
+
             _单例.Play(list.列表随机项().name);
         }
         else

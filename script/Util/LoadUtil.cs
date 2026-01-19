@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
+using desktop.script.logic;
 using Godot;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
@@ -110,5 +111,98 @@ public partial class LoadUtil : Node
         }
         // 4. 强制刷新当前语言显示
         TranslationServer.SetLocale(TranslationServer.GetLocale());
+    }
+
+    private static string BinPath => GetProjectPath("bin");
+    private static string ConfigPath => GetProjectPath("config");
+    public static string ModPath => GetProjectPath("mods");
+    private static string GetProjectPath(string folderName)
+    {
+        return OS.HasFeature("editor") 
+            ? ProjectSettings.GlobalizePath($"res://{folderName}") 
+            : Path.Combine(OS.GetExecutablePath().GetBaseDir(), folderName);
+    }
+    public static string GetOutputDir()
+    {
+        // 1. 获取当前日期并格式化为 "M-d" (例如 1-10)
+        // 如果你希望 1月1日显示为 01-01，可以使用 "MM-dd"
+        var folderName = DateTime.Now.ToString("MM-dd");
+
+        // 2. 合并完整路径
+        var fullPath = Path.Combine(OS.GetUserDataDir(), folderName);
+
+        // 3. 检查目录是否存在，不存在则创建
+        // CreateDirectory 方法内部会自动判断，如果目录已存在则不执行任何操作
+        if (!Directory.Exists(fullPath))
+        {
+            Directory.CreateDirectory(fullPath);
+        }
+
+        return fullPath;
+    }
+    public static string GetExternalToolPath(string toolName)
+    {
+        if (string.IsNullOrEmpty(toolName)) return null;
+        if (Main.工具路径字典.TryGetValue(toolName,out var path) && Path.Exists(path))
+        {
+            return path;
+        }
+// 1. 先拼接基础路径 (bin/XX)
+        var exePath = Path.Combine(BinPath, toolName);
+
+// 2. 处理 Windows 下的扩展名
+        if (OS.GetName() == "Windows" && !exePath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+        {
+            exePath += ".exe";
+        }
+
+// 3. 逻辑判断：如果基础路径下的文件不存在，则尝试查找子目录下的路径
+        if (!File.Exists(exePath))
+        {
+            // 构造 bin/XX/XX.exe 这种结构
+            var subDirName = toolName;
+            var fileName = toolName;
+    
+            if (OS.GetName() == "Windows" && !fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                fileName += ".exe";
+            }
+
+            var nestedPath = Path.Combine(BinPath, subDirName, fileName);
+
+            // 如果子目录下的文件确实存在，则更新 exePath
+            if (File.Exists(nestedPath))
+            {
+                exePath = nestedPath;
+            }
+        }
+
+        return ProjectSettings.GlobalizePath(exePath);
+    }
+    public static void 初始化()
+    {
+        var path = ConfigPath;
+        IO.单例.setG("bin",BinPath);
+        IO.单例.setG("config",path);
+        IO.单例.setG("mod",ModPath);
+        IO.单例.setG("save",GetOutputDir());
+        LoadI18nCSV(Path.Combine(path,Main.本地化文件名));
+        var 初始化列表 = FromJson<List<初始化信息>>(Path.Combine(path,Main.初始化配置文件名));
+        if (初始化列表!=null)
+        {
+            foreach (var 初始化信息 in 初始化列表)
+            {
+                OS.ExecuteWithPipe(GetExternalToolPath(初始化信息.tool),初始化信息.arguments);
+            }
+        }
+        var 工具字典 = FromJson<Dictionary<string, string>>(Path.Combine(path,Main.工具配置文件名));
+        if (工具字典!=null)
+        {
+            foreach (var (k,v) in 工具字典)
+            {
+                Main.工具路径字典[k] = v;
+            }
+        }
+        Main._配置信息字典 = FromJson<Dictionary<string, string>>(Path.Combine(path,Main.配置信息文件名));
     }
 }
