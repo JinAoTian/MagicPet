@@ -1,6 +1,5 @@
-[gd_scene load_steps=13 format=3 uid="uid://bijuvf6qjvh7l"]
+[gd_scene load_steps=15 format=3 uid="uid://bijuvf6qjvh7l"]
 
-[ext_resource type="Script" uid="uid://crg6er7ge5r6p" path="res://script/Loader/ModLoader.cs" id="1_80cx4"]
 [ext_resource type="Script" uid="uid://cf0h0dtbopy88" path="res://script/UX/Context.cs" id="4_7jktm"]
 [ext_resource type="Script" uid="uid://bqrbs7h7rtxy3" path="res://script/UX/WindowDrag.cs" id="4_fc0e3"]
 [ext_resource type="Script" uid="uid://d3wi7jo3dg6kl" path="res://script/UX/WindowScale.cs" id="5_eow3j"]
@@ -10,9 +9,13 @@
 [ext_resource type="Resource" uid="uid://ic3t0ys3qxm1" path="res://resource/icon.tres" id="8_vef74"]
 [ext_resource type="Script" uid="uid://206qit1gpyuh" path="res://script/UX/PopupMenuShortUpHandle.cs" id="9_mfdv2"]
 [ext_resource type="Script" uid="uid://1l0nnfmcpqp" path="res://script/UX/Dialogue.cs" id="9_vef74"]
+[ext_resource type="Script" uid="uid://d3uhavew72r2p" path="res://script/Audio/Kws.cs" id="11_iotsf"]
+[ext_resource type="Script" uid="uid://bdk38gs7ie3jt" path="res://script/Logic/Main.cs" id="11_mfdv2"]
 [ext_resource type="Script" uid="uid://be34u7vjgk822" path="res://script/UX/CharAnim.cs" id="17_e8heu"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bnpwn"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_lc2xo"]
 
 [node name="Game" type="Node"]
 
@@ -76,5 +79,15 @@ size = Vector2i(20, 8)
 max_size = Vector2i(32768, 256)
 script = ExtResource("9_mfdv2")
 
-[node name="ModLoader" type="Node" parent="."]
-script = ExtResource("1_80cx4")
+[node name="Audio" type="Node" parent="."]
+
+[node name="KWS" type="Node" parent="Audio"]
+script = ExtResource("11_iotsf")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
+stream = SubResource("AudioStreamMicrophone_lc2xo")
+autoplay = true
+bus = &"Record"
+
+[node name="Main" type="Node" parent="."]
+script = ExtResource("11_mfdv2")

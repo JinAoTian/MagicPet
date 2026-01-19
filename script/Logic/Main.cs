@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using desktop.script.Audio;
+using desktop.script.Loader;
 using desktop.script.Util;
 using desktop.script.UX;
 using Godot;
@@ -37,7 +39,13 @@ public partial class Main:Node
     public override void _Ready()
     {
         _单例 = this;
+
         LoadUtil.初始化();
+        ModLoader.加载模组();
+        
+        Kws.TurnOn();
+        Context.显示指令列表();
+        CharAnim.载入人物动画();
     }
     public static bool IgnorePath(string path) => Path.GetFileName(path).StartsWith("_");
     public static void 选择脚本(脚本信息 脚本信息)

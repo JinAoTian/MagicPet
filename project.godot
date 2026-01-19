@@ -19,11 +19,14 @@ boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/show_image=false
 config/icon="uid://bna7x0vyn258u"
 
+[audio]
+
+driver/enable_input=true
+
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 IO="*res://script/Logic/IO.cs"
-Main="*res://script/Logic/Main.cs"
 
 [dialogic]
 
