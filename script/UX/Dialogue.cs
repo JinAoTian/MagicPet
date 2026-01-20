@@ -19,7 +19,7 @@ public partial class Dialogue : Node
     private const float 打字速度 = 20.0f;
     private const int 标题显示时间 = 3000;
     private static Dialogue _单例;
-    private static readonly List<脚本信息> 脚本列表 = new();
+    private static readonly List<可见脚本信息> 脚本列表 = new();
     private static E选项类型 _选项类型 = E选项类型.无;
     private static string _脚本选项标题;
     public override void _Ready()
@@ -115,7 +115,7 @@ public partial class Dialogue : Node
         }
         _单例.底部居中显示();
     }
-    public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问,bool 配置显示=false) where T : 脚本信息
+    public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问,bool 配置显示=false) where T : 可见脚本信息
     {
         _选项类型 = E选项类型.脚本;
         脚本列表.Clear();

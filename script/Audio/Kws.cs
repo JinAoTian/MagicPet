@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 // 用于内存操作
 using desktop.script.logic;
-using desktop.script.UX;
 using Godot;
 using SherpaOnnx; // 确保引用了 SherpaOnnx 命名空间
 
@@ -12,6 +13,8 @@ public partial class Kws : Node
     private static KeywordSpotter _spotter;
     private static OnlineStream _stream;
     private static AudioEffectCapture _effectCapture;
+    public static readonly List<string> 关键词列表 = new();
+    public static readonly Dictionary<string, 关键词信息> 关键词映射 = new();
     public static void TurnOn()
     {        
         var modelPaths = Main.工具路径字典;
@@ -34,8 +37,9 @@ public partial class Kws : Node
             config.ModelConfig.NumThreads = 1; // 建议先设为1调试
             config.ModelConfig.Debug = 0;      // 开启调试日志，这能让你在控制台看到崩溃前的最后输出
 
+            File.WriteAllLines(keywordsPath,关键词列表);
             config.KeywordsFile = keywordsPath; 
-            config.KeywordsThreshold = 0.25f;
+            config.KeywordsThreshold = 0.10f;
             // 初始化 Spotter
             _spotter = new KeywordSpotter(config);
             _stream = _spotter.CreateStream();
@@ -107,8 +111,7 @@ public partial class Kws : Node
             if (!string.IsNullOrEmpty(result.Keyword))
             {
                 
-                // 调用激活逻辑
-                GetKey();
+                GetKey(result.Keyword);
                 
                 // 检测后重置流（可选，取决于是否需要连续检测）
                 // _stream = _spotter.CreateStream(); 
@@ -116,11 +119,22 @@ public partial class Kws : Node
         }
     }
 
-    private static void GetKey()
+    private static void GetKey(string keyword)
     {
         // 可以在这里通过事件总线发送信号，或者直接执行逻辑
-        GD.Print("激活 - 关键词识别成功");
-        _ = Dialogue.显示临时标题("我在");
+        GD.Print($"激活 - {keyword}");
+        if (关键词映射.TryGetValue(keyword,out var 关键词信息))
+        {
+            if (关键词信息.info!=null)
+            {
+                foreach (var (k,v) in 关键词信息.info)
+                {
+                    IO.单例.set(k,v);
+                }
+            }
+            Main.选择脚本(关键词信息.对应脚本);
+        }
+        //_ = Dialogue.显示临时标题("我在");
         // 示例：调用 Main 中的逻辑
         // Main.Instance.OnVoiceCommandReceived();
     }

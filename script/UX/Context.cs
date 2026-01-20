@@ -11,9 +11,9 @@ public partial class Context : Node
 {
     [Export] public PopupMenu 右键菜单;
     [Export] public IconResource IconResource;
-    private static List<脚本信息> 直接指令列表 => CommandLoader.直接指令列表;
+    private static List<可见脚本信息> 直接指令列表 => CommandLoader.直接指令列表;
     private static Dictionary<string, 脚本组信息> 直接指令组映射 => CommandLoader.直接指令组映射;
-    private static Dictionary<string, List<脚本信息>> 直接指令组脚本映射 => CommandLoader.直接指令组脚本映射;
+    private static Dictionary<string, List<可见脚本信息>> 直接指令组脚本映射 => CommandLoader.直接指令组脚本映射;
     private static readonly List<string> 脚本组列表 = [];
     private static Context _单例;
     public override void _Ready()

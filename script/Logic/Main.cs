@@ -8,6 +8,7 @@ using desktop.script.Util;
 using desktop.script.UX;
 using Godot;
 using DialogueManagerRuntime;
+using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 
@@ -31,7 +32,7 @@ public partial class Main:Node
     public const string 配置信息文件名 = "config.json";
     public static readonly Dictionary<string, 人物数据> 人物字典 = new();
     public static 人物数据 显示人物 => 人物字典[_配置信息字典.GetValueOrDefault("当前人物","loris")];
-    public static List<脚本信息> 配置脚本列表 = [];
+    public static List<可见脚本信息> 配置脚本列表 = [];
     public static Dictionary<string, string> 工具路径字典=new();
     public static Dictionary<string, string> _配置信息字典=new();
     private static Main _单例;
@@ -47,7 +48,7 @@ public partial class Main:Node
         Context.显示指令列表();
         CharAnim.载入人物动画();
     }
-    public static bool IgnorePath(string path) => Path.GetFileName(path).StartsWith("_");
+    public static bool IgnorePath(string path) => Path.GetFileName(path).StartsWith($"_");
     public static void 选择脚本(脚本信息 脚本信息)
     {
         当前脚本 = 脚本信息;
@@ -155,11 +156,32 @@ public partial class Main:Node
     }
     public static void 注册脚本信息(脚本信息 脚本信息)
     {
-        脚本信息.LoadIcon();
-        if (!string.IsNullOrEmpty(脚本信息.config))
+        if (脚本信息 is 可见脚本信息 可见脚本信息)
         {
-            脚本信息.config = Path.Combine(脚本信息.Path,脚本信息.config);
-            配置脚本列表.Add(脚本信息);
+            可见脚本信息.LoadIcon();
+            if (!string.IsNullOrEmpty(可见脚本信息.config))
+            {
+                可见脚本信息.config = Path.Combine(脚本信息.Path,可见脚本信息.config);
+                配置脚本列表.Add(可见脚本信息);
+            }
+        }
+
+        if (脚本信息 is 关键词脚本信息 { keywordList: not null } 关键词脚本)
+        {
+            var 关键词列表 = Kws.关键词列表;
+            var 关键词映射 = Kws.关键词映射;
+            foreach (var 关键词信息 in 关键词脚本.keywordList)
+            {
+                if (关键词信息.keywords == null) continue;
+                关键词信息.对应脚本 = 关键词脚本;
+                foreach (var 关键词字段 in 关键词信息.keywords)
+                {
+                    var 分段 = 关键词字段.Split("@");
+                    if (分段.Length==1)continue;
+                    关键词列表.Add(关键词字段);
+                    关键词映射[分段[1]] = 关键词信息;
+                }
+            }
         }
     }
     private static void RunScriptTask(脚本信息 脚本信息, string gdMethodName, string callbackMethodName)
@@ -194,19 +216,26 @@ public class 脚本组信息
 }
 public class 脚本信息
 {
-    public string name;
     public string tool;
-    public string group;
     public string tip;
-    // ReSharper disable once MemberCanBePrivate.Global
-    public string icon = "icon.png";
     public bool option;
     public bool prepare;
     public bool wait;
     public bool showOut;
-    public string config;
     public string Path;
     public string ModPath;
+}
+public class 关键词脚本信息 : 脚本信息
+{
+    public List<关键词信息> keywordList;
+}
+public class 可见脚本信息:脚本信息
+{
+    public string name;
+    public string group;
+    // ReSharper disable once MemberCanBePrivate.Global
+    public string icon = "icon.png";
+    public string config;
     public Texture2D IconImg;
     public void LoadIcon()
     {
@@ -221,7 +250,7 @@ public class 脚本信息
     }
 }
 // ReSharper disable once ClassNeverInstantiated.Global
-public class 索引脚本信息:脚本信息
+public class 索引脚本信息:可见脚本信息
 {
     public bool batch;//可批处理
     public bool multi;//支持多个扩展名混用
@@ -253,4 +282,11 @@ public class 初始化信息
 {
     public string tool;
     public string[] arguments = [];
+}
+
+public class 关键词信息
+{
+    public List<string> keywords;
+    public Dictionary<string, string> info;
+    [JsonIgnore] public 关键词脚本信息 对应脚本;
 }
