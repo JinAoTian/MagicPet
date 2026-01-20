@@ -39,7 +39,7 @@ public partial class Kws : Node
 
             File.WriteAllLines(keywordsPath,关键词列表);
             config.KeywordsFile = keywordsPath; 
-            config.KeywordsThreshold = 0.10f;
+            config.KeywordsThreshold = 0.05f;
             // 初始化 Spotter
             _spotter = new KeywordSpotter(config);
             _stream = _spotter.CreateStream();

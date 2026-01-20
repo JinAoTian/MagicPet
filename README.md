@@ -45,16 +45,18 @@
 
 ## 📦 集成开源工具清单
 
-项目预集成了以下优秀开源工具，以强化自动化处理能力：
+项目集成了以下开源工具：
 
-| 工具名称            | 说明             | 链接                                                   |
-|:--------------- |:-------------- |:---------------------------------------------------- |
-| **CopyQ**       | 强大的剪切板管理器      | [GitHub](https://github.com/hluk/CopyQ)              |
-| **Everything**  | 毫秒级全盘文件搜索      | [Voidtools](https://www.voidtools.com/)              |
-| **Flameshot**   | 功能丰富的跨平台截图工具   | [GitHub](https://github.com/flameshot-org/flameshot) |
-| **ImageMagick** | 命令行图像处理工具集     | [GitHub](https://github.com/ImageMagick/ImageMagick) |
-| **Optimizer**   | Windows 系统优化工具 | [GitHub](https://github.com/hellzerg/optimizer)      |
-| **yt-dlp**      | 视频下载命令行工具      | [GitHub](https://github.com/yt-dlp/yt-dlp)           |
+| 工具名称            | 说明                        | 链接                                                   |
+|:--------------- |:------------------------- |:---------------------------------------------------- |
+| **CopyQ**       | 强大的剪切板管理器                 | [GitHub](https://github.com/hluk/CopyQ)              |
+| **Everything**  | 毫秒级全盘文件搜索                 | [Voidtools](https://www.voidtools.com/)              |
+| **Flameshot**   | 功能丰富的跨平台截图工具              | [GitHub](https://github.com/flameshot-org/flameshot) |
+| **ImageMagick** | 命令行图像处理工具集                | [GitHub](https://github.com/ImageMagick/ImageMagick) |
+| **Lively**      | 开源动态桌面和屏幕保护程序 (WinUI 3)   | [GitHub](https://github.com/rocksdanister/lively)    |
+| **Optimizer**   | Windows 系统优化工具            | [GitHub](https://github.com/hellzerg/optimizer)      |
+| **Sherpa-onnx** | 全平台离线语音处理工具 (STT/TTS/VAD) | [GitHub](https://github.com/k2-fsa/sherpa-onnx)      |
+| **yt-dlp**      | 视频下载命令行工具                 | [GitHub](https://github.com/yt-dlp/yt-dlp)           |
 
 ---
 

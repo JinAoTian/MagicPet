@@ -111,18 +111,24 @@ public partial class Main:Node
     public static void 对话结束() => 运行执行函数(当前脚本);
     private static void 运行执行函数(脚本信息 脚本信息)
     {
-        if (脚本信息.wait)
+        if (脚本信息.excute)
         {
-            Dialogue.显示标题("wait"); 
+            if (脚本信息.wait)
+            {
+                Dialogue.显示标题("wait"); 
+            }
+            // 直接调用通用提取函数
+            RunScriptTask(脚本信息, 执行函数名, "执行函数完成");
         }
-
-        // 直接调用通用提取函数
-        RunScriptTask(脚本信息, 执行函数名, "执行函数完成");
+        else
+        {
+            执行函数完成();   
+        }
         Dialogue.脚本结束();
     }
     private static void 执行函数完成()
     {
-        CharAnim.开始庆祝();
+        if (当前脚本.excute)CharAnim.开始庆祝();
         var tip = string.IsNullOrEmpty(当前脚本.tip) ? "done" : 当前脚本.tip;
         if (IO.单例.get("tip", out var value))
         {
@@ -219,6 +225,7 @@ public class 脚本信息
     public string tool;
     public string tip;
     public bool option;
+    public bool excute=true;
     public bool prepare;
     public bool wait;
     public bool showOut;

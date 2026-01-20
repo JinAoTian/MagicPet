@@ -55,12 +55,13 @@ public static class CommandLoader
             if(Main.IgnorePath(脚本目录))continue;
             var 配置文件路径 = Path.Combine(脚本目录, Main.配置文件名);
             var 脚本文件路径 = Path.Combine(脚本目录, 脚本文件名);
-            if (File.Exists(配置文件路径) && File.Exists(脚本文件路径))
+            if (File.Exists(配置文件路径))
             {
                 try
                 {
                     var info = LoadUtil.FromJson<T>(配置文件路径);
                     if(info==null)continue;
+                    if(info.excute && !File.Exists(脚本文件路径))continue;
                     info.Path = 脚本目录;
                     info.ModPath = ModLoader.模组路径;
                     Main.注册脚本信息(info);
