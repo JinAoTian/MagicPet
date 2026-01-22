@@ -34,6 +34,7 @@ public static class ModLoader
         IndexLoader.加载索引脚本(路径);
         CommandLoader.加载指令脚本(路径);
         NodeLoader.加载场景列表(路径);
+        DialogueLoader.加载对话(路径);
         LoadUtil.LoadI18nCSV(Path.Combine(路径,Main.本地化文件名));
     }
 }

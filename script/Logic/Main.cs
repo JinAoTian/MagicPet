@@ -8,16 +8,6 @@ using desktop.script.Util;
 using desktop.script.UX;
 using Godot;
 using DialogueManagerRuntime;
-using Newtonsoft.Json;
-
-// ReSharper disable InconsistentNaming
-
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable ConvertToConstant.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable UnassignedField.Global
-// ReSharper disable CollectionNeverUpdated.Global
-
 namespace desktop.script.logic;
 public partial class Main:Node
 {
@@ -31,10 +21,10 @@ public partial class Main:Node
     private const string 对话文件名 = "option.dialogue";
     public const string 配置信息文件名 = "config.json";
     public static readonly Dictionary<string, 人物数据> 人物字典 = new();
-    public static 人物数据 显示人物 => 人物字典[_配置信息字典.GetValueOrDefault("当前人物","loris")];
-    public static List<可见脚本信息> 配置脚本列表 = [];
-    public static Dictionary<string, string> 工具路径字典=new();
-    public static Dictionary<string, string> _配置信息字典=new();
+    public static 人物数据 显示人物 => 人物字典[配置信息字典.GetValueOrDefault("当前人物","loris")];
+    public static readonly List<可见脚本信息> 配置脚本列表 = [];
+    public static readonly Dictionary<string, string> 工具路径字典=new();
+    public static Dictionary<string, string> 配置信息字典=new();
     private static Main _单例;
     public static 脚本信息 当前脚本;
     public override void _Ready()
@@ -210,90 +200,4 @@ public partial class Main:Node
             }
         });
     }
-}
-//对外暴露的字段统一用小驼峰敖
-public class 脚本组信息
-{
-    public string id;
-    public string name;
-    public string ask;
-    public string icon;
-    public Texture2D IconImg;
-}
-public class 脚本信息
-{
-    public string tool;
-    public string tip;
-    public bool option;
-    public bool excute=true;
-    public bool prepare;
-    public bool wait;
-    public bool showOut;
-    public string Path;
-    public string ModPath;
-}
-public class 关键词脚本信息 : 脚本信息
-{
-    public List<关键词信息> keywordList;
-}
-public class 可见脚本信息:脚本信息
-{
-    public string name;
-    public string group;
-    // ReSharper disable once MemberCanBePrivate.Global
-    public string icon = "icon.png";
-    public string config;
-    public Texture2D IconImg;
-    public void LoadIcon()
-    {
-        if (string.IsNullOrEmpty(icon) || !ImageUtil.Loadimage(System.IO.Path.Combine(Path,icon),out var image))
-        {
-            IconImg = null;
-        }
-        else
-        {
-            IconImg = image;
-        }
-    }
-}
-// ReSharper disable once ClassNeverInstantiated.Global
-public class 索引脚本信息:可见脚本信息
-{
-    public bool batch;//可批处理
-    public bool multi;//支持多个扩展名混用
-    public List<string> extensions;
-}
-public class 人物数据
-{
-    public readonly Dictionary<string, List<动画信息>> 动画池字典=new();
-    public readonly Dictionary<string, 动画信息> 动画信息映射=new();
-}
-// ReSharper disable once ClassNeverInstantiated.Global
-public class 抬头信息
-{
-    public List<string> extensions;
-    public string name;
-    public bool batch;//可批处理
-    public bool multi;//支持多个扩展名混用
-}
-public class 动画信息
-{
-    public int rate;
-    public string name;
-    public List<string> nextClip;
-    public string Type;
-    public string Path;
-}
-
-public class 初始化信息
-{
-    public string tool;
-    public string[] arguments = [];
-}
-
-public class 关键词信息
-{
-    public List<string> keywords;
-    public Dictionary<string, string> info;
-    [JsonIgnore] public 关键词脚本信息 对应脚本;
 }

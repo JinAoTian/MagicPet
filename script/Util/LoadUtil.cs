@@ -203,6 +203,6 @@ public partial class LoadUtil : Node
                 Main.工具路径字典[k] = v;
             }
         }
-        Main._配置信息字典 = FromJson<Dictionary<string, string>>(Path.Combine(path,Main.配置信息文件名));
+        Main.配置信息字典 = FromJson<Dictionary<string, string>>(Path.Combine(path,Main.配置信息文件名));
     }
 }

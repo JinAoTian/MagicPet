@@ -1,7 +1,0 @@
-{
-    "KWS-decoder":"model/decoder.onnx",
-    "KWS-encoder":"model/encoder.onnx",
-    "KWS-joiner":"model/joiner.onnx",
-    "KWS-tokens":"model/tokens.txt",
-    "KWS-keywords":"model/keywords.txt"
-}
