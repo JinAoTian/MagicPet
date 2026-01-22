@@ -37,6 +37,7 @@ public partial class Main:Node
         Kws.TurnOn();
         Context.显示指令列表();
         CharAnim.载入人物动画();
+        _ = Dialogue.显示临时标题(DialogueLoader.默认对话.入场招呼,5000);
     }
     public static bool IgnorePath(string path) => Path.GetFileName(path).StartsWith($"_");
     public static void 选择脚本(脚本信息 脚本信息)

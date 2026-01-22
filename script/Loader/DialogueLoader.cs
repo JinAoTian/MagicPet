@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using System.IO;
 using desktop.script.logic;
 using desktop.script.Util;
-using Godot;
+
 namespace desktop.script.Loader;
 
-public partial class DialogueLoader : Node
+public static class DialogueLoader
 {    
     private const string 目录名 = "dialogue";
     private const string 入场招呼文件名 = "greetIn.json";
     private const string 离场招呼文件名 = "greetOut.json";
-    private static readonly 对话信息 默认对话 = new();
+    public static readonly 对话信息 默认对话 = new();
     public static void 加载对话(string 路径)
     {
         var 总目录 = Path.Combine(路径, 目录名);

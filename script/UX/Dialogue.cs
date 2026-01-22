@@ -17,7 +17,6 @@ public partial class Dialogue : Node
     [Export] public RichTextLabel 标题;
     [Export] public IconResource IconResource;
     private const float 打字速度 = 20.0f;
-    private const int 标题显示时间 = 3000;
     private static Dialogue _单例;
     private static readonly List<可见脚本信息> 脚本列表 = new();
     private static E选项类型 _选项类型 = E选项类型.无;
@@ -37,7 +36,7 @@ public partial class Dialogue : Node
     public static void 延迟显示标题(string 文本) => _单例.CallDeferred("单例显示标题",文本);
     public static void 显示标题(string 文本) => _单例.单例显示标题(_单例.Tr(文本));
     private static int _当前标题序列号;
-    public static async Task 显示临时标题(string 文本)
+    public static async Task 显示临时标题(string 文本,int 显示时间=3000)
     {
         // 每次调用，递增序列号
         var 当前序列 = ++_当前标题序列号;
@@ -46,7 +45,7 @@ public partial class Dialogue : Node
             var 翻译文本 = _单例.Tr(文本);
             _单例.单例显示标题(翻译文本);
 
-            await Task.Delay(标题显示时间);
+            await Task.Delay(显示时间);
             if (_当前标题序列号 == 当前序列)
             {
                 关闭标题();
@@ -59,6 +58,7 @@ public partial class Dialogue : Node
     }
     private void 单例显示标题(string 文本)
     {
+        if(string.IsNullOrEmpty(文本))return;
         var t标题 = 标题;
         t标题.Visible = true;
         
