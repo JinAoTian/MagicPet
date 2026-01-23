@@ -21,6 +21,7 @@ public partial class Dialogue : Node
     private static readonly List<可见脚本信息> 脚本列表 = new();
     private static E选项类型 _选项类型 = E选项类型.无;
     private static string _脚本选项标题;
+    private static string _当前文本;
     public override void _Ready()
     {
         // 清理并添加选项
@@ -34,16 +35,16 @@ public partial class Dialogue : Node
     }
     // ReSharper disable once MemberCanBePrivate.Global 外部调用
     public static void 延迟显示标题(string 文本) => _单例.CallDeferred("单例显示标题",文本);
-    public static void 显示标题(string 文本) => _单例.单例显示标题(_单例.Tr(文本));
+    public static void 显示标题(string 文本) => _单例.单例显示标题(文本);
     private static int _当前标题序列号;
     public static async Task 显示临时标题(string 文本,int 显示时间=3000)
     {
+        if (string.IsNullOrEmpty(文本))return;
         // 每次调用，递增序列号
         var 当前序列 = ++_当前标题序列号;
         try
         {
-            var 翻译文本 = _单例.Tr(文本);
-            _单例.单例显示标题(翻译文本);
+            _单例.单例显示标题(文本);
 
             await Task.Delay(显示时间);
             if (_当前标题序列号 == 当前序列)
@@ -56,15 +57,16 @@ public partial class Dialogue : Node
             GD.PrintErr($"临时标题异常: {e.Message}");
         }
     }
-    private void 单例显示标题(string 文本)
+    private void 单例显示标题(string 原始文本)
     {
-        if(string.IsNullOrEmpty(文本))return;
+        if(string.IsNullOrEmpty(原始文本))return;
+        var 文本 = Tr(原始文本);
+        _当前文本 = 原始文本;
         var t标题 = 标题;
         t标题.Visible = true;
-        
+
         // 1. 设置带 BBCode 的文本
         t标题.Text = $"[wave][bgcolor=#00000066]{文本}[/bgcolor][/wave]";
-        
         // 2. 初始可见字符设为 0
         t标题.VisibleCharacters = 0;
 
@@ -84,6 +86,14 @@ public partial class Dialogue : Node
     public static void 关闭标题()
     {
         _单例.标题.Visible = false;
+        _当前文本 = null;
+    }
+    public static void 关闭指定标题(string text)
+    {
+        if (_当前文本 == text)
+        {
+            关闭标题();
+        }
     }
     private void 底部居中显示()
     {

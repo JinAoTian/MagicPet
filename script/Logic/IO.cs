@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using desktop.script.UX;
 using Godot;
 using Godot.Collections;
 
@@ -60,5 +61,115 @@ public partial class IO : Node
         }
         value = default;
         return false;
+    }
+    private AudioStreamPlayer _currentMasterPlayer;
+    private string audioText;
+    private int audiotxtCnt;
+    private const float fadeTime = 1f;
+    public void setAudioText(string text)
+    {
+        audioText = text;
+        Main.结束标题 = true;
+        Dialogue.延迟显示标题(text);
+        audiotxtCnt++;
+    }
+
+    public void stopAudioDef()
+    {
+        CallDeferred(nameof(stopAudio));
+    }
+    public void stopAudio()
+    {
+        // 关键点：将全局引用转为局部引用，防止执行过程中 _currentMasterPlayer 被换成新的
+        var playerToStop = _currentMasterPlayer;
+        _currentMasterPlayer = null; // 立即清空，表示当前没有“活跃”的主音乐了
+        var cnt = audiotxtCnt;
+        if (IsInstanceValid(playerToStop) && playerToStop.IsInsideTree())
+        {
+            var tween = GetTree().CreateTween();
+            tween.TweenProperty(playerToStop, "volume_db", -80.0f, fadeTime)
+                .SetTrans(Tween.TransitionType.Linear);
+
+            tween.Finished += () => 
+            {
+                if (IsInstanceValid(playerToStop))
+                {
+                    playerToStop.Stop();
+                    playerToStop.QueueFree();
+                    // 触发结束回调
+                    OnAudioFinished(cnt);
+                }
+            };
+        }
+    }
+    public bool playAudio(string path, float volumeLinear = 1.0f)
+    {
+        if (!FileAccess.FileExists(path))
+        {
+            GD.PrintErr($"音频文件不存在: {path}");
+            return false;
+        }
+
+        var stream = LoadAudioFromPath(path);
+        if (stream == null) return false;
+
+        // 立即执行停止逻辑，确保旧的播放器进入淡出流程
+        // 注意：这里不在 Deferred 里调用，是为了确保变量立刻被重置
+        stopAudio();
+
+        Callable.From(() => {
+            var player = new AudioStreamPlayer();
+            _currentMasterPlayer = player; // 现在的 player 是全新的
+            AddChild(player);
+
+            player.Stream = stream;
+            player.Bus = "Master";
+            player.VolumeDb = Mathf.LinearToDb(volumeLinear);
+            player.Finished += () => 
+            {
+                // 只有当这个 player 依然是“当前播放器”时才触发
+                // 防止淡出销毁和自然结束销毁冲突
+                if (IsInstanceValid(player))
+                {
+                    if (_currentMasterPlayer == player) _currentMasterPlayer = null;
+                    OnAudioFinished(audiotxtCnt);
+                    player.QueueFree();
+                }
+            };
+
+            player.Play();
+        }).CallDeferred();
+
+        return true;
+    }
+    private static AudioStream LoadAudioFromPath(string path)
+    {
+        byte[] bytes = FileAccess.GetFileAsBytes(path);
+        if (bytes == null || bytes.Length == 0) return null;
+
+        string ext = path.GetExtension().ToLower();
+
+        switch (ext)
+        {
+            case "mp3":
+                return new AudioStreamMP3 { Data = bytes };
+            case "ogg":
+                return AudioStreamOggVorbis.LoadFromBuffer(bytes);
+            case "wav":
+                // WAV 外部加载通常需要处理 Header，这里保持简单赋值
+                return new AudioStreamWav { Data = bytes };
+            default:
+                GD.PrintErr($"不支持的音频格式: {ext}");
+                return null;
+        }
+    }
+    private void OnAudioFinished(int cnt)
+    {
+        if (cnt == audiotxtCnt && !string.IsNullOrEmpty(audioText))
+        {
+            Dialogue.关闭指定标题(audioText);
+            audioText = null;
+        }
+        //TODO:后续添加回调
     }
 }

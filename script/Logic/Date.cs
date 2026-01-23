@@ -28,6 +28,7 @@ public class 脚本信息
     public string tip;
     public bool option;
     public bool excute=true;
+    public bool cheer = true;
     public bool prepare;
     public bool wait;
     public bool showOut;

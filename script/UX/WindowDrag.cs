@@ -1,3 +1,4 @@
+using desktop.script.logic;
 using Godot;
 
 namespace desktop.script.UX;
@@ -50,6 +51,8 @@ public partial class WindowDrag : Node
                     // 正式锁定 Offset
                     _dragOffset = currentMousePos - DisplayServer.WindowGetPosition();
                     CharAnim.开始拖拽();
+                    Dialogue.关闭标题();
+                    IO.单例.stopAudio();
                 }
             }
             

@@ -114,7 +114,7 @@ dialogic_default_action={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://mods/main_command/command/2open-web/option.dialogue", "res://mods/main_command/command/3copy-info/option.dialogue", "res://mods/magick/file/image-convert/option.dialogue", "res://mods/magick/file/image-shrink/option.dialogue")
+locale/translations_pot_files=PackedStringArray("res://mods/main_command/command/2open-web/option.dialogue", "res://mods/main_command/command/3copy-info/option.dialogue")
 
 [rendering]
 

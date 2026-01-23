@@ -27,6 +27,7 @@ public partial class Main:Node
     public static Dictionary<string, string> 配置信息字典=new();
     private static Main _单例;
     public static 脚本信息 当前脚本;
+    public static bool 结束标题;
     public override void _Ready()
     {
         _单例 = this;
@@ -119,7 +120,7 @@ public partial class Main:Node
     }
     private static void 执行函数完成()
     {
-        if (当前脚本.excute)CharAnim.开始庆祝();
+        if (当前脚本.cheer)CharAnim.开始庆祝();
         var tip = string.IsNullOrEmpty(当前脚本.tip) ? "done" : 当前脚本.tip;
         if (IO.单例.get("tip", out var value))
         {
@@ -137,7 +138,14 @@ public partial class Main:Node
         {
             if (tip == "done")
             {
-                Dialogue.关闭标题();
+                if (!结束标题)
+                {
+                    Dialogue.关闭标题();
+                }
+                else
+                {
+                    结束标题 = false;
+                }
             }
             else
             {
