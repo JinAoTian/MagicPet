@@ -113,8 +113,8 @@ public partial class Kws : Node
                 
                 GetKey(result.Keyword);
                 
-                // 检测后重置流（可选，取决于是否需要连续检测）
-                // _stream = _spotter.CreateStream(); 
+                _stream.Dispose(); // 释放旧流
+                _stream = _spotter.CreateStream();
             }
         }
     }
