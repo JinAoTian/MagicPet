@@ -59,6 +59,11 @@ public class 可见脚本信息:脚本信息
         }
     }
 }
+
+public class 目录脚本信息 : 可见脚本信息
+{
+    public bool multi;//支持多个目录
+}
 public class 索引脚本信息:可见脚本信息
 {
     public bool batch;//可批处理

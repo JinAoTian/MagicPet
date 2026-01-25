@@ -127,6 +127,7 @@ public partial class Dialogue : Node
     }
     public static void 显示脚本选项<T>(List<T> 新脚本列表,string 询问,bool 配置显示=false) where T : 可见脚本信息
     {
+        if(新脚本列表.Count==0)return;
         _选项类型 = E选项类型.脚本;
         脚本列表.Clear();
         脚本列表.AddRange(新脚本列表);

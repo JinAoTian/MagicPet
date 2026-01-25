@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using desktop.script.Loader;
@@ -14,6 +15,7 @@ namespace desktop.script.logic;
 public partial class FileDrop : Node
 {
     private static FileDrop _单例;
+    private static int _纯目录;
     public override void _Ready()
     {
         GetTree().Root.FilesDropped += OnFilesDropped;
@@ -35,8 +37,11 @@ public partial class FileDrop : Node
     {
         var paths = new List<string>();
         var relativePaths = new List<string>();
+        var dir = new List<string>();
         // 在后台线程或异步任务中处理 IO 耗时逻辑
-        await Task.Run(() => {
+        await Task.Run(() =>
+        {
+            _纯目录 = 1;
             foreach (var path in files)
             {
                 var finalPath = path.ToLower();
@@ -47,6 +52,7 @@ public partial class FileDrop : Node
 
                 if (Directory.Exists(finalPath))
                 {
+                    dir.Add(finalPath);
                     // 获取 finalPath 的上一级目录路径
                     var parentPath = Directory.GetParent(finalPath)?.FullName;
                     if (parentPath != null)
@@ -59,7 +65,7 @@ public partial class FileDrop : Node
                             if ((attributes & FileAttributes.Hidden) == 0 && (attributes & FileAttributes.System) == 0)
                             {
                                 paths.Add(file);
-                
+                                
                                 // 计算相对于父目录的路径
                                 // 例如：如果 parentPath 是 C:\Projects，file 是 C:\Projects\MyApp\data.txt
                                 // 结果将是 "MyApp\data.txt"
@@ -70,6 +76,7 @@ public partial class FileDrop : Node
                 }
                 else if (File.Exists(finalPath))
                 {
+                    _纯目录 = 0;
                     paths.Add(finalPath);
                     relativePaths.Add(finalPath.GetFile());
                     GD.Print(finalPath.GetFile());
@@ -78,7 +85,12 @@ public partial class FileDrop : Node
         });
 
         var extension = Path.GetExtension(paths[0]);
+        if (_纯目录>0)
+        {
+            _纯目录 = dir.Count;
+        }
         IO.单例.set("in",paths.ToArray());
+        IO.单例.set("dir",dir.ToArray());
         IO.单例.set("inR",relativePaths.ToArray());
         IO.单例.set("ext",extension);
         IO.单例.set("single",paths.Count == 1);
@@ -89,6 +101,15 @@ public partial class FileDrop : Node
 
     private static void FinalizeProcess(string[] paths)
     {
+        if (_纯目录>0)
+        {
+            var 额外脚本列表 = new List<可见脚本信息>();
+            额外脚本列表.AddRange(_纯目录 == 1
+                ? CommandLoader.目录指令列表
+                : CommandLoader.目录指令列表.Where(目录脚本 => 目录脚本.multi));
+            IndexMatch.设置额外脚本列表(额外脚本列表);
+            _纯目录 = 0;
+        }
         IndexMatch.处理路径(paths,IndexLoader.文件索引映射,IndexLoader.文件脚本映射,IndexLoader.文件通用脚本列表,"file-ask");
     }
     [SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]

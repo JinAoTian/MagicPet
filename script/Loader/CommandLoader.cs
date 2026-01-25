@@ -24,13 +24,16 @@ public static class CommandLoader
     private static readonly Dictionary<string, 脚本组信息> 展示指令组映射 = new();
     private static readonly Dictionary<string, List<可见脚本信息>> 展示指令组脚本映射 = new();
     private const string 关键词目录名 = "keyword";
-    private static readonly List<关键词脚本信息> 关键词指令列表 = new();
+    private static readonly List<关键词脚本信息> 关键词指令列表 = new();    
+    private const string 目录目录名 = "folder";
+    public static readonly List<目录脚本信息> 目录指令列表 = new();
     public static void 加载指令脚本(string 路径)
     {
         加载指令(Path.Combine(路径, 直接目录名),直接指令列表,直接指令组脚本映射,直接指令组映射);
         加载指令(Path.Combine(路径, 文本目录名),文本指令列表,文本指令组脚本映射,文本指令组映射);
         加载指令(Path.Combine(路径, 展示目录名),展示指令列表,展示指令组脚本映射,展示指令组映射);
         加载指令(Path.Combine(路径, 关键词目录名),关键词指令列表,null,null);
+        加载指令(Path.Combine(路径, 目录目录名),目录指令列表,null,null);
     }
     private static void 加载指令<T>(string 总目录,List<T> 指令列表,Dictionary<string, List<T>>指令组脚本映射,Dictionary<string, 脚本组信息>指令组映射) where T:脚本信息
     {

@@ -20,6 +20,7 @@ public static class ConfigLoader
             foreach (var (k,v) in 工具字典)
             {
                 var 工具路径 = Path.Combine(路径, v);
+
                 if (File.Exists(工具路径))
                 {
                     Main.工具路径字典[k] = 工具路径;
