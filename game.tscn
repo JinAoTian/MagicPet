@@ -64,6 +64,7 @@ IconResource = ExtResource("8_vef74")
 [node name="RichTextLabel" type="RichTextLabel" parent="Dialogue"]
 offset_right = 512.0
 offset_bottom = 128.0
+theme_override_constants/line_separation = 6
 theme_override_font_sizes/normal_font_size = 32
 theme_override_font_sizes/bold_font_size = 32
 theme_override_font_sizes/bold_italics_font_size = 32
