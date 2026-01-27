@@ -143,7 +143,7 @@ public partial class LoadUtil : Node
     public static string GetExternalToolPath(string toolName)
     {
         if (string.IsNullOrEmpty(toolName)) return null;
-        if (Main.工具路径字典.TryGetValue(toolName,out var path) && Path.Exists(path))
+        if (Main.工具路径字典.TryGetValue(toolName,out var path))
         {
             return path;
         }

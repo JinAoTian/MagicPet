@@ -25,6 +25,10 @@ public static class ConfigLoader
                 {
                     Main.工具路径字典[k] = 工具路径;
                 }
+                else
+                {
+                    Main.工具路径字典[k] = v;
+                }
             }
         }
         var 初始化列表 = LoadUtil.FromJson<List<初始化信息>>(Path.Combine(总目录,Main.初始化配置文件名));

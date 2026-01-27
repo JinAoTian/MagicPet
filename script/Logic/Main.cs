@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using desktop.script.Audio;
 using desktop.script.Loader;
@@ -44,7 +45,15 @@ public partial class Main:Node
     public static void 选择脚本(脚本信息 脚本信息)
     {
         当前脚本 = 脚本信息;
-        IO.单例.set("tool",LoadUtil.GetExternalToolPath(脚本信息.tool));
+        if (!string.IsNullOrEmpty(脚本信息.tool))
+        {
+            IO.单例.set("tool",LoadUtil.GetExternalToolPath(脚本信息.tool));
+        }
+        if (脚本信息.tools !=null)
+        {
+            var tools = 脚本信息.tools.Select(LoadUtil.GetExternalToolPath).ToArray();
+            IO.单例.set("tools",tools);
+        }
         IO.单例.set("script",脚本信息.Path);
         IO.单例.set("mod",脚本信息.ModPath);
         IO.单例.set("out",LoadUtil.GetOutputDir());

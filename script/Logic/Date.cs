@@ -25,6 +25,7 @@ public class 脚本组信息
 public class 脚本信息
 {
     public string tool;
+    public List<string> tools;
     public string tip;
     public bool option;
     public bool excute=true;
