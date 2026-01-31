@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using desktop.script.Steam;
 using desktop.script.UX;
 using Godot;
 using Godot.Collections;
@@ -172,4 +173,14 @@ public partial class IO : Node
         }
         //TODO:后续添加回调
     }
+
+    #region steam
+
+    // ReSharper disable once MemberCanBeMadeStatic.Global
+    public void PublishItem(string path)
+    {
+        var _ = WorkShop.PublishItem(path).GetAwaiter().GetResult();
+    }
+
+    #endregion
 }

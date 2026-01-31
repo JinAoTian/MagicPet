@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using desktop.script.logic;
@@ -46,6 +47,29 @@ public partial class LoadUtil : Node
             GD.PrintErr($"[LoadUtil] JSON 解析失败: {ex.Message}");
             return default;
         }
+    }
+
+    public static void WriteJson(string path, object obj)
+    {
+        // 1. 确保目标文件夹存在，否则会抛出 DirectoryNotFoundException
+        var directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        // 2. 配置序列化设置
+        var settings = new JsonSerializerSettings
+        {
+            Formatting = Formatting.Indented, // 产生带缩进的 JSON，易于人类阅读
+            DateFormatString = "yyyy-MM-dd HH:mm:ss" // 可选：统一时间格式
+        };
+
+        // 3. 将对象转换为 JSON 字符串
+        var jsonContent = JsonConvert.SerializeObject(obj, settings);
+
+        // 4. 写入文件（使用 UTF-8 编码以支持中文）
+        File.WriteAllText(path, jsonContent, Encoding.UTF8);
     }
     // ReSharper disable once InconsistentNaming
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]

@@ -27,6 +27,7 @@ driver/enable_input=true
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 IO="*res://script/Logic/IO.cs"
+SteamNode="*res://script/Steam/SteamNode.cs"
 
 [dialogic]
 
