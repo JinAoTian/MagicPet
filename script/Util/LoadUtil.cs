@@ -136,8 +136,7 @@ public partial class LoadUtil : Node
         // 4. 强制刷新当前语言显示
         TranslationServer.SetLocale(TranslationServer.GetLocale());
     }
-
-    private static string BinPath => GetProjectPath("bin");
+    
     private static string ConfigPath => GetProjectPath("config");
     public static string ModPath => GetProjectPath("mods");
     private static string GetProjectPath(string folderName)
@@ -166,47 +165,11 @@ public partial class LoadUtil : Node
     }
     public static string GetExternalToolPath(string toolName)
     {
-        if (string.IsNullOrEmpty(toolName)) return null;
-        if (Main.工具路径字典.TryGetValue(toolName,out var path))
-        {
-            return path;
-        }
-// 1. 先拼接基础路径 (bin/XX)
-        var exePath = Path.Combine(BinPath, toolName);
-
-// 2. 处理 Windows 下的扩展名
-        if (OS.GetName() == "Windows" && !exePath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-        {
-            exePath += ".exe";
-        }
-
-// 3. 逻辑判断：如果基础路径下的文件不存在，则尝试查找子目录下的路径
-        if (!File.Exists(exePath))
-        {
-            // 构造 bin/XX/XX.exe 这种结构
-            var subDirName = toolName;
-            var fileName = toolName;
-    
-            if (OS.GetName() == "Windows" && !fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-            {
-                fileName += ".exe";
-            }
-
-            var nestedPath = Path.Combine(BinPath, subDirName, fileName);
-
-            // 如果子目录下的文件确实存在，则更新 exePath
-            if (File.Exists(nestedPath))
-            {
-                exePath = nestedPath;
-            }
-        }
-
-        return ProjectSettings.GlobalizePath(exePath);
+        return string.IsNullOrEmpty(toolName) ? null : Main.工具路径字典.GetValueOrDefault(toolName);
     }
     public static void 初始化()
     {
         var path = ConfigPath;
-        IO.单例.setG("bin",BinPath);
         IO.单例.setG("config",path);
         IO.单例.setG("mod",ModPath);
         IO.单例.setG("save",GetOutputDir());
