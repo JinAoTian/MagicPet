@@ -4,7 +4,6 @@ visit,游览,瀏覽,Browse,閲覧,둘러보기,Durchsuchen,Parcourir,Explorar,Sf
 visit-ask,请选择要游览的网站~,請選擇要瀏覽的網站~,Select a site to browse,サイトを選択,탐색할 사이트 선택,Website wählen,Choisir site,Elegir sitio,Scegli sito,Escolher site,Выберите сайт,Chọn trang,เลือกเว็บไซต์ที่ต้องการชม
 tool,工具,工具,Tools,道具,도구,Werkzeuge,Outils,Herramientas,Strumenti,Ferramentas,Инструменты,Công cụ,เครื่องมือ
 tool-ask,想干啥?,想幹嘛?,What do you want?,何か用?,뭐 하고 싶어?,Was willst du?,Tu veux quoi?,¿Qué quieres?,Che cosa vuoi?,O que você quer?,Что ты хочешь?,Bạn muốn gì?,คุณต้องการทำอะไร?
-bin,外部程序,外部程式,Binaries,バイナリ,바이너리,Binärdateien,Binaires,Binarios,Binari,Binários,Бинарные файлы,Tập tin hệ thống,ไบนารี
 save,存储目录,儲存目錄,Save Directory,セーブデータ,저장 디렉토리,Speicherverzeichnis,Répertoire de sauvegarde,Directorio de guardado,Directory di salvataggio,Diretório de salvamento,Папка сохранений,Thư mục lưu trữ,ไดเรกทอรีที่จัดเก็บ
 config,配置,配置,Configuration,設定,설정,Konfiguration,Configuration,Configuración,Configurazione,Configuração,Конфигурация,Cấu hình,การกำหนดค่า
 mods,模组,模組,Mods,モッド,모드,Mods,Mods,Mods,Mod,Mods,Моды,Bản mở rộng (Mods),ม็อด
@@ -12,3 +11,5 @@ config-ask,选择要查看的配置,選擇要查看的配置,Select a configurat
 copy-info,复制,複製,Copy,コピー,복사,Kopieren,Copier,Copiar,Copia,Copiar,Копировать,Sao chép,คัดลอก
 copy-ask,请选择要复制的信息~,請選擇要複製的信息~,Please select the information to copy.,コピーする項目を選択してください。,복사할 정보를 선택해주세요.,Bitte wählen Sie die zu kopierenden Informationen aus.,Veuillez sélectionner les informations à copier.,Seleccione la información que desea copiar.,Seleziona le informazioni da copiare.,Selecione as informações a copiar.,Выберите информацию для копирования.,Vui lòng chọn thông tin cần sao chép.,โปรดเลือกข้อมูลที่ต้องการคัดลอก
 copy-finish,已复制到剪切板~,已複製到剪貼簿~,Copied to clipboard~,クリップボードにコピーしました~,클립보드에 복사되었습니다~,In die Zwischenablage kopiert~,Copié dans le presse-papiers~,Copiado al portapapeles~,Copiato negli appunti~,Copiado para a área de transferência~,Скопировано в буфер обмена~,Đã sao chép vào bộ nhớ tạm~,คัดลอกไปยังคลิปบอร์ดแล้ว~
+language,语言,語言,Language,言語,언어,Sprache,Langue,Idioma,Lingua,Idioma,Язык,Ngôn ngữ,ภาษา
+language-ask,请选择要切换的语言~,請選擇要切換的語言~,Please select a language,言語を選択してください,언어를 선택해 주세요,Bitte wählen Sie eine Sprache,Vui lòng chọn ngôn ngữ,Selecciona un idioma,Seleziona una lingua,Selecione um idioma,Выберите язык,Vui lòng chọn ngôn ngữ,กรุณาเลือกภาษา

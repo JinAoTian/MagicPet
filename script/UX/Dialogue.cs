@@ -292,7 +292,7 @@ public partial class Dialogue : Node
             选项菜单.AddItem("继续...", 0);
         }
 
-        if (脚本列表.Count>0)选项菜单.AddIconItem(IconResource.返回图标,Tr("返回"),6174);
+        if (脚本列表.Count>0)选项菜单.AddIconItem(IconResource.返回图标,Tr("return"),6174);
         ShortCutUtil.BindShortCut( _单例.选项菜单,6174,0);
         底部居中显示();
     }
@@ -308,6 +308,7 @@ public partial class Dialogue : Node
     {
         if (id == 0)
         {
+            GD.Print((string)IO.单例.get("out"));
             OS.ShellOpen((string)IO.单例.get("out"));
             return; 
         }

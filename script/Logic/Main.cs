@@ -137,11 +137,12 @@ public partial class Main:Node
         }
 
         var outpath = (string)IO.单例.get("out");
+        GD.Print(outpath);
         IO.单例.Info.Clear();
         if (当前脚本.showOut)
         {
-            Dialogue.文件处理完成(tip);
             IO.单例.set("out",outpath);
+            Dialogue.文件处理完成(tip);
         }
         else
         {

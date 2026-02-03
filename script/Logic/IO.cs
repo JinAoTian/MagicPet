@@ -74,7 +74,16 @@ public partial class IO : Node
         Dialogue.延迟显示标题(text);
         audiotxtCnt++;
     }
-
+    public void ChangeLang(string code)
+    {
+        // 注意：这里传递的是变量 code，而不是字符串 "code"
+        CallDeferred(nameof(ChangeLangDef), code);
+    }
+    private void ChangeLangDef(string code)
+    {
+        TranslationServer.SetLocale(code);
+        Context.显示指令列表();
+    }
     public void stopAudioDef()
     {
         CallDeferred(nameof(stopAudio));
