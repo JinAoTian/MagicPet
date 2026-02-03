@@ -14,9 +14,20 @@ public partial class IO : Node
     public Dictionary Info = new ();//单例方便dialogue获取
     public Dictionary Global  = new();
     public static IO 单例;
+    public static readonly ConfigFile 配置 = new();
+    public const string 配置路径 = "user://settings.cfg";
     public override void _Ready()
     {
         单例 = this;
+        var err = 配置.Load(配置路径);
+        if (err == Error.Ok)
+        {
+            var lang = 配置.GetValue("Player", "lang", "").AsString();
+            if (!string.IsNullOrEmpty(lang))
+            {
+                TranslationServer.SetLocale(lang);
+            }
+        }
     }
     public void set(string key, Variant value)
     {
@@ -83,6 +94,8 @@ public partial class IO : Node
     {
         TranslationServer.SetLocale(code);
         Context.显示指令列表();
+        配置.SetValue("Player", "lang",code);
+        配置.Save(配置路径);
     }
     public void stopAudioDef()
     {

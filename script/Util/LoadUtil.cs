@@ -9,6 +9,7 @@ using CsvHelper.Configuration;
 using desktop.script.logic;
 using Godot;
 using Newtonsoft.Json;
+using Environment = System.Environment;
 using FileAccess = Godot.FileAccess;
 
 namespace desktop.script.Util;
@@ -165,7 +166,64 @@ public partial class LoadUtil : Node
     }
     public static string GetExternalToolPath(string toolName)
     {
-        return string.IsNullOrEmpty(toolName) ? null : Main.工具路径字典.GetValueOrDefault(toolName);
+        // 基础参数校验：空值/空白字符直接返回空
+        if (string.IsNullOrWhiteSpace(toolName))
+        {
+            GD.PrintErr("[工具地址查询] 工具名称不能为空！");
+            return null;
+        }
+
+        // 1. 优先从自定义字典获取配置值（支持路径、网址、任意字符串）
+        var configValue = Main.工具路径字典.GetValueOrDefault(toolName);
+        if (!string.IsNullOrEmpty(configValue))
+        {
+            GD.Print($"[工具地址查询] 从配置字典获取：{toolName} -> {configValue}");
+            return configValue;
+        }
+
+        // 2. 字典无配置，尝试从Windows系统PATH环境变量查找本地可执行文件
+        try
+        {
+            var systemPath = FindToolInSystemPath(toolName);
+            if (!string.IsNullOrEmpty(systemPath))
+            {
+                GD.Print($"[工具地址查询] 从系统环境变量获取：{toolName} -> {systemPath}");
+                return systemPath;
+            }
+        }
+        catch (Exception ex)
+        {
+            GD.PrintErr($"[工具地址查询] 检索系统环境变量异常：{ex.Message}");
+        }
+
+        // 3. 所有渠道均未找到
+        GD.PrintErr($"[工具地址查询] 未找到匹配项：{toolName}");
+        return null;
+    }
+    private static string FindToolInSystemPath(string toolName)
+    {
+        // Windows可执行文件后缀，仅用于检索本地程序
+        string[] executableExtensions = [".exe"];
+        var pathEnv = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
+        var pathDirs = pathEnv.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        foreach (var dir in pathDirs)
+        {
+            // 跳过不存在的目录
+            if (!Directory.Exists(dir)) 
+                continue;
+
+            foreach (var ext in executableExtensions)
+            {
+                var fullPath = Path.Combine(dir, $"{toolName}{ext}");
+                if (File.Exists(fullPath))
+                {
+                    return fullPath;
+                }
+            }
+        }
+
+        return null;
     }
     public static void 初始化()
     {
