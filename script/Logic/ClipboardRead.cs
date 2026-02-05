@@ -64,7 +64,6 @@ public partial class ClipboardRead : Node
         IO.单例.set("path",pathAndQuerys.ToArray());
         IO.单例.set("ext",hosts[0]);
         IO.单例.set("single",input.Count == 1);
-        GD.Print(urls[0]);
         IndexMatch.处理路径(hosts.ToArray(),IndexLoader.网址索引映射,IndexLoader.网址脚本映射,IndexLoader.网址通用脚本列表,"web-ask");
     }
     
