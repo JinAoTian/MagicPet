@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using desktop.script.logic;
+using desktop.script.Steam;
 using desktop.script.Util;
 using Godot;
 
@@ -16,9 +17,11 @@ public static class ModLoader
     {
         遍历模组目录(LoadUtil.ModPath,false);
         遍历模组目录(OS.GetExecutablePath().GetBaseDir().GetBaseDir(),true);//steam加载逻辑
+        遍历模组目录(WorkShop.GetWorkshopParentPath(),false);
     }
     private static void 遍历模组目录(string 目录,bool 检测识别)
     {
+        if(string.IsNullOrEmpty(目录))return;
         foreach (var 模组目录 in Directory.GetDirectories(目录))
         {
             if(Main.IgnorePath(模组目录))continue;

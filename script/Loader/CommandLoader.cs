@@ -15,7 +15,7 @@ public static class CommandLoader
     public static readonly List<可见脚本信息> 直接指令列表 = new();
     public static readonly Dictionary<string, 脚本组信息> 直接指令组映射 = new();
     public static readonly Dictionary<string, List<可见脚本信息>> 直接指令组脚本映射 = new();    
-    private const string 文本目录名 = "txt";
+    private const string 文本目录名 = "text";
     public static readonly List<可见脚本信息> 文本指令列表 = new();
     private static readonly Dictionary<string, 脚本组信息> 文本指令组映射 = new();
     private static readonly Dictionary<string, List<可见脚本信息>> 文本指令组脚本映射 = new();

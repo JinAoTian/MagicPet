@@ -4,6 +4,8 @@ using Steamworks.Ugc;
 using System.Threading.Tasks;
 using desktop.script.Util;
 using Godot;
+using Steamworks;
+
 // ReSharper disable UnassignedField.Global
 
 // ReSharper disable InconsistentNaming
@@ -14,7 +16,7 @@ public static class WorkShop
     public static async Task<bool> PublishItem(string path)
     {
         // 检查 Steam 状态
-        if (!Steamworks.SteamClient.IsValid)
+        if (!SteamClient.IsValid)
         {
             GD.PrintErr("Steam 客户端未初始化，请先启动 Steam！");
             return false;
@@ -89,6 +91,49 @@ public static class WorkShop
         }
         GD.PrintErr($"上传失败: {result.Result}");
         return false;
+    }
+
+    public static string GetWorkshopParentPath()
+    {
+        // 1. 确保 Steam 已初始化，否则拿不到 AppId
+        if (!SteamClient.IsValid) return null;
+        try
+        {
+// 2. 获取程序集所在目录（比 BaseDirectory 在某些环境下更稳）
+            string currentPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(currentPath)) return null;
+
+            DirectoryInfo dir = new DirectoryInfo(currentPath);
+        
+            // 3. 循环向上查找 steamapps 目录
+            // 这样做比写死 .Parent.Parent 更安全，能适应不同的安装深度
+            while (dir != null && dir.Name.ToLower() != "steamapps")
+            {
+                dir = dir.Parent;
+            }
+
+            // 4. 如果找到了 steamapps，拼接创意工坊路径
+            if (dir != null)
+            {
+                string workshopPath = Path.Combine(
+                    dir.FullName, 
+                    "workshop", 
+                    "content", 
+                    SteamClient.AppId.ToString()
+                );
+
+                if (Directory.Exists(workshopPath))
+                {
+                    return workshopPath;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"获取路径失败: {ex.Message}");
+        }
+
+        return null;
     }
 }
 
