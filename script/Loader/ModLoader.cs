@@ -32,7 +32,7 @@ public static class ModLoader
     private static void 加载模组(string 路径)
     {
         模组路径 = 路径;
-        ConfigLoader.加载配置信息(路径);
+        ConfigLoader.加载模组配置信息(路径);
         AnimLoader.加载动画(路径);
         IndexLoader.加载索引脚本(路径);
         CommandLoader.加载指令脚本(路径);

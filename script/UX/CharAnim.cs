@@ -58,6 +58,7 @@ public partial class CharAnim : AnimatedSprite2D
                 }
                 break;
             case "exit":
+                Main.游戏结束();
                 GetTree().Quit();
                 break;
         }

@@ -25,7 +25,7 @@ public partial class Main:Node
     public static 人物数据 显示人物 => 人物字典[配置信息字典.GetValueOrDefault("当前人物","loris")];
     public static readonly List<可见脚本信息> 配置脚本列表 = [];
     public static readonly Dictionary<string, string> 工具路径字典=new();
-    public static Dictionary<string, string> 配置信息字典=new();
+    public static readonly Dictionary<string, string> 配置信息字典=new();
     private static Main _单例;
     public static 脚本信息 当前脚本;
     public static bool 结束标题;
@@ -218,5 +218,10 @@ public partial class Main:Node
                 GD.PrintErr($"执行脚本 {gdMethodName} 时出错: {e.Message}");
             }
         });
+    }
+
+    public static void 游戏结束()
+    {
+        ConfigLoader.CleanupProcesses();
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
+using desktop.script.Loader;
 using desktop.script.logic;
 using Godot;
 using Newtonsoft.Json;
@@ -232,22 +233,6 @@ public partial class LoadUtil : Node
         IO.单例.setG("mod",ModPath);
         IO.单例.setG("save",GetOutputDir());
         LoadI18nCSV(Path.Combine(path,Main.本地化文件名));
-        var 初始化列表 = FromJson<List<执行信息>>(Path.Combine(path,Main.初始化配置文件名));
-        if (初始化列表!=null)
-        {
-            foreach (var 初始化信息 in 初始化列表)
-            {
-                OS.ExecuteWithPipe(GetExternalToolPath(初始化信息.tool),初始化信息.arguments);
-            }
-        }
-        var 工具字典 = FromJson<Dictionary<string, string>>(Path.Combine(path,Main.工具配置文件名));
-        if (工具字典!=null)
-        {
-            foreach (var (k,v) in 工具字典)
-            {
-                Main.工具路径字典[k] = v;
-            }
-        }
-        Main.配置信息字典 = FromJson<Dictionary<string, string>>(Path.Combine(path,Main.配置信息文件名));
+        ConfigLoader.加载配置信息(path);
     }
 }
