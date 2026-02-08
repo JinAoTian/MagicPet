@@ -31,7 +31,7 @@ public static class ConfigLoader
                 }
             }
         }
-        var 初始化列表 = LoadUtil.FromJson<List<初始化信息>>(Path.Combine(总目录,Main.初始化配置文件名));
+        var 初始化列表 = LoadUtil.FromJson<List<执行信息>>(Path.Combine(总目录,Main.初始化配置文件名));
         if (初始化列表!=null)
         {
             foreach (var 初始化信息 in 初始化列表)

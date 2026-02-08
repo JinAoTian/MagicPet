@@ -232,7 +232,7 @@ public partial class LoadUtil : Node
         IO.单例.setG("mod",ModPath);
         IO.单例.setG("save",GetOutputDir());
         LoadI18nCSV(Path.Combine(path,Main.本地化文件名));
-        var 初始化列表 = FromJson<List<初始化信息>>(Path.Combine(path,Main.初始化配置文件名));
+        var 初始化列表 = FromJson<List<执行信息>>(Path.Combine(path,Main.初始化配置文件名));
         if (初始化列表!=null)
         {
             foreach (var 初始化信息 in 初始化列表)

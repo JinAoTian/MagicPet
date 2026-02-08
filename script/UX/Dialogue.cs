@@ -105,7 +105,7 @@ public partial class Dialogue : Node
         选项菜单.Size = new Vector2I(20, 8);
         选项菜单.MaxSize = new Vector2I(选项菜单.MaxSize.X, (int)(viewportSize.Y/3));
         选项菜单.Position = new Vector2I((int)x, (int)y);
-        选项菜单.Popup();
+        选项菜单.Show();
     }
     public static void 文件处理完成(string tip)
     {
@@ -310,6 +310,7 @@ public partial class Dialogue : Node
         {
             GD.Print((string)IO.单例.get("out"));
             OS.ShellOpen((string)IO.单例.get("out"));
+            IO.单例.Info.Clear();
             return; 
         }
         IO.单例.set("in",IO.单例.get("result"));

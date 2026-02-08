@@ -135,13 +135,9 @@ public partial class Main:Node
         {
             tip = (string)value;
         }
-
-        var outpath = (string)IO.单例.get("out");
-        GD.Print(outpath);
-        IO.单例.Info.Clear();
         if (当前脚本.showOut)
         {
-            IO.单例.set("out",outpath);
+            IO.单例.Info.Remove("tip");
             Dialogue.文件处理完成(tip);
         }
         else
@@ -161,8 +157,8 @@ public partial class Main:Node
             {
                 _ = Dialogue.显示临时标题(tip);
             }
+            IO.单例.Info.Clear();
         }
-
     }
     private static void 运行预处理函数(脚本信息 脚本信息)
     {

@@ -93,7 +93,7 @@ public class 动画信息
     public string Type;
     public string Path;
 }
-public class 初始化信息
+public class 执行信息
 {
     public string tool;
     public string[] arguments = [];
